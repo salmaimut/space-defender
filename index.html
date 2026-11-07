@@ -127,7 +127,7 @@
     top: 0; left: 0; right: 0;
     z-index: 6;
     pointer-events: none;
-    padding: 3.2cqw 3.8cqw 2.2cqw;
+    padding: calc(3.2cqw + env(safe-area-inset-top, 0px)) 3.8cqw 2.2cqw;
     background: linear-gradient(180deg, rgba(4,2,14,.86) 0%, rgba(4,2,14,.4) 62%, transparent 100%);
   }
   .hud-row {
@@ -138,7 +138,7 @@
   }
   .stat { display: flex; flex-direction: column; gap: .7cqw; min-width: 0; }
   .stat .label {
-    font-size: clamp(7px, 1.8cqw, 13px);
+    font-size: clamp(8px, 1.95cqw, 13px);
     letter-spacing: .26em;
     color: #8ea0e0;
     font-weight: 700;
@@ -174,7 +174,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: clamp(7px, 1.75cqw, 12px);
+    font-size: clamp(8px, 1.9cqw, 12px);
     font-weight: 700;
     letter-spacing: .24em;
     color: #a99bff;
@@ -217,7 +217,7 @@
   .boss-label {
     display: flex;
     justify-content: space-between;
-    font-size: clamp(7px, 1.7cqw, 12px);
+    font-size: clamp(8px, 1.85cqw, 12px);
     letter-spacing: .22em;
     font-weight: 700;
     color: #ff93ad;
@@ -288,7 +288,7 @@
   }
   .banner-sub {
     margin-top: 1.2cqw;
-    font-size: clamp(8px, 2cqw, 14px);
+    font-size: clamp(9px, 2.05cqw, 14px);
     letter-spacing: .3em;
     color: #c9d4ff;
     text-shadow: 0 0 12px rgba(120, 140, 255, .8);
@@ -333,7 +333,7 @@
     to { opacity: 1; transform: none; }
   }
   .kicker {
-    font-size: clamp(8px, 1.9cqw, 13px);
+    font-size: clamp(9px, 1.95cqw, 13px);
     letter-spacing: .42em;
     color: #8a9bff;
     text-transform: uppercase;
@@ -375,7 +375,7 @@
     max-width: 46ch;
     margin: 2.6cqw auto 3.4cqw;
     color: #a3b2e8;
-    font-size: clamp(10px, 2.3cqw, 16px);
+    font-size: clamp(11px, 2.35cqw, 16px);
     line-height: 1.6;
   }
   .board-title {
@@ -399,7 +399,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: 1.8cqw 0 2.6cqw;
-    font-size: clamp(9px, 2.1cqw, 15px);
+    font-size: clamp(10px, 2.15cqw, 15px);
   }
   .leaderboard-table th {
     padding: 1.2cqw .6cqw;
@@ -435,7 +435,7 @@
   }
   .result div { display: flex; flex-direction: column; gap: .8cqw; }
   .result span {
-    font-size: clamp(7px, 1.7cqw, 12px);
+    font-size: clamp(8.5px, 1.8cqw, 12px);
     letter-spacing: .26em;
     color: #8292cc;
     font-weight: 700;
@@ -482,7 +482,7 @@
   }
   .hint {
     margin-top: 3.2cqw;
-    font-size: clamp(8px, 1.9cqw, 13px);
+    font-size: clamp(9px, 1.95cqw, 13px);
     line-height: 1.8;
     color: #7f8fc8;
     letter-spacing: .04em;
@@ -533,7 +533,7 @@
   <div class="nebula nebula-b"></div>
   <div class="nebula nebula-c"></div>
 
-  <canvas id="gameCanvas" class="game-canvas" width="720" height="1080"></canvas>
+  <canvas id="gameCanvas" class="game-canvas" width="1440" height="2560"></canvas>
   <div class="scanlines"></div>
   <div class="vignette"></div>
 
@@ -676,10 +676,10 @@ const ctx = canvas.getContext('2d');
 
 const W = 720;
 const H = 1280;
-const DPR = Math.min(window.devicePixelRatio || 1, 2);
-canvas.width = W * DPR;
-canvas.height = H * DPR;
-ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+const RENDER_SCALE = 2;
+canvas.width = W * RENDER_SCALE;
+canvas.height = H * RENDER_SCALE;
+ctx.setTransform(RENDER_SCALE, 0, 0, RENDER_SCALE, 0, 0);
 
 const STATE = { MENU: 'MENU', PLAYING: 'PLAYING', PAUSED: 'PAUSED', DYING: 'DYING', GAMEOVER: 'GAMEOVER' };
 let gameState = STATE.MENU;
@@ -699,7 +699,6 @@ let flash = 0;
 let flashColor = '255, 70, 90';
 let waveDelay = 0;
 let deathTimer = 0;
-let overdriveBannerShown = false;
 
 /* ---------- glow sprites (pre-rendered for speed) ---------- */
 function makeGlow(rgb, size) {
@@ -756,6 +755,7 @@ function initAudio() {
   }
   if (audioCtx.state === 'suspended') audioCtx.resume();
 }
+document.addEventListener('pointerdown', initAudio, { passive: true });
 
 function tone(f0, f1, dur, type, vol, delay) {
   if (!audioCtx || muted) return;
@@ -840,6 +840,7 @@ function sfx(name) {
    =================================================================== */
 const keys = Object.create(null);
 let dragging = false;
+let dragPointerId = null;
 let lastPointer = { x: 0, y: 0 };
 
 function toLogical(e) {
@@ -851,10 +852,20 @@ function toLogical(e) {
 }
 
 window.addEventListener('keydown', (e) => {
-  if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(e.code)) e.preventDefault();
+  const typing = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA');
+  if (e.code === 'Escape') {
+    const modal = document.getElementById('username-modal');
+    if (!modal.classList.contains('hidden')) {
+      showScreen('menu-screen');
+      renderLeaderboard('menu-leaderboard');
+      if (typing) e.target.blur();
+      return;
+    }
+  }
+  if (!typing && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(e.code)) e.preventDefault();
+  if (typing) return;
   keys[e.code] = true;
   initAudio();
-  if (e.target && e.target.tagName === 'INPUT') return;
   if (e.code === 'KeyP' || e.code === 'Escape') togglePause();
   if (e.code === 'KeyM') toggleSound();
   if (e.code === 'Enter' && gameState === STATE.MENU && !document.getElementById('menu-screen').classList.contains('hidden')) {
@@ -865,12 +876,14 @@ window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 window.addEventListener('blur', () => {
   for (const k in keys) keys[k] = false;
   dragging = false;
+  dragPointerId = null;
 });
 
 canvas.addEventListener('pointerdown', (e) => {
   initAudio();
-  if (gameState !== STATE.PLAYING) return;
+  if (gameState !== STATE.PLAYING || dragPointerId !== null) return;
   dragging = true;
+  dragPointerId = e.pointerId;
   lastPointer = toLogical(e);
   if (canvas.setPointerCapture) {
     try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
@@ -878,7 +891,7 @@ canvas.addEventListener('pointerdown', (e) => {
   e.preventDefault();
 });
 canvas.addEventListener('pointermove', (e) => {
-  if (!dragging || gameState !== STATE.PLAYING) return;
+  if (!dragging || dragPointerId !== e.pointerId || gameState !== STATE.PLAYING) return;
   const p = toLogical(e);
   player.x = clamp(player.x + (p.x - lastPointer.x) * 1.35, 30, W - 30);
   player.y = clamp(player.y + (p.y - lastPointer.y) * 1.05, H * .46, H - 54);
@@ -886,13 +899,12 @@ canvas.addEventListener('pointermove', (e) => {
   e.preventDefault();
 });
 function endPointer(e) {
+  if (e && dragPointerId !== null && e.pointerId !== dragPointerId) return;
   dragging = false;
-  if (canvas.releasePointerCapture && e && e.pointerId !== undefined) {
-    try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
-  }
+  dragPointerId = null;
 }
-canvas.addEventListener('pointerup', endPointer);
-canvas.addEventListener('pointercancel', endPointer);
+window.addEventListener('pointerup', endPointer);
+window.addEventListener('pointercancel', endPointer);
 
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
@@ -910,6 +922,7 @@ const player = {
   overdrive: 0,
   invuln: 0,
   bank: 0,
+  trailTimer: 0,
   dead: false
 };
 const OVERDRIVE_TIME = 8;
@@ -952,6 +965,7 @@ function initStars() {
   const counts = [110, 70, 45];
   const speeds = [22, 58, 112];
   const sizes = [1, 1.7, 2.5];
+  const palette = ['190,220,255', '150,240,255', '205,185,255', '255,235,200'];
   for (let L = 0; L < 3; L++) {
     const arr = [];
     for (let i = 0; i < counts[L]; i++) {
@@ -961,7 +975,8 @@ function initStars() {
         size: sizes[L] * rand(.7, 1.35),
         speed: speeds[L],
         tw: rand(0, TAU),
-        twSpeed: rand(1.2, 3.4)
+        twSpeed: rand(1.2, 3.4),
+        color: palette[Math.floor(Math.random() * palette.length)]
       });
     }
     starLayers.push(arr);
@@ -1035,7 +1050,6 @@ function addPower(amount) {
 function activateOverdrive() {
   player.overdrive = OVERDRIVE_TIME;
   player.power = 100;
-  overdriveBannerShown = false;
   showBanner('OVERDRIVE', 'TWIN LASER ONLINE', '#5ef3ff');
   shockwaves.push({ x: player.x, y: player.y, r: 16, max: 260, life: .6, maxLife: .6, rgb: '94,243,255' });
   flash = .45;
@@ -1451,6 +1465,27 @@ function updatePlayer(dt) {
   }
   if (player.invuln > 0) player.invuln -= dt;
 
+  player.trailTimer -= dt;
+  if (player.trailTimer <= 0 && particles.length < 600) {
+    player.trailTimer = .05;
+    const od = player.overdrive > 0;
+    const life = rand(.22, .34);
+    particles.push({
+      kind: 'fire',
+      x: player.x + rand(-7, 7),
+      y: player.y + 26,
+      vx: rand(-26, 26),
+      vy: rand(140, 240),
+      life,
+      maxLife: life,
+      size: rand(9, 17),
+      rgb: od ? '255,79,216' : '94,243,255',
+      sprite: od ? GLOW.magenta : GLOW.cyan,
+      drag: 1.2,
+      grav: 0
+    });
+  }
+
   if (player.overdrive > 0) {
     player.overdrive -= dt;
     player.power = Math.max(0, (player.overdrive / OVERDRIVE_TIME) * 100);
@@ -1717,9 +1752,6 @@ function updatePlaying(dt) {
     }
   }
 
-  if (player.overdrive > 0 && !overdriveBannerShown && player.overdrive < OVERDRIVE_TIME - .35) {
-    overdriveBannerShown = true;
-  }
 }
 
 function updateSpawner(dt) {
@@ -1824,7 +1856,7 @@ function drawStars() {
     for (const s of starLayers[L]) {
       const twinkle = .45 + .55 * (.5 + .5 * Math.sin(s.tw));
       const alpha = twinkle * [0.55, 0.78, 1][L];
-      ctx.fillStyle = 'rgba(190,220,255,' + alpha.toFixed(3) + ')';
+      ctx.fillStyle = 'rgba(' + s.color + ',' + alpha.toFixed(3) + ')';
       if (L === 2) {
         ctx.fillRect(s.x, s.y, s.size * .8, s.size * 4.5);
       } else {
@@ -2263,6 +2295,23 @@ function drawBeams() {
       ctx.lineTo(b.x + b.w / 2, H);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const rr = 20 + 6 * Math.abs(Math.sin(b.t * 10));
+      ctx.strokeStyle = 'rgba(255,130,180,.9)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(b.x, H - 48, rr, 0, TAU);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(b.x - rr - 9, H - 48);
+      ctx.lineTo(b.x - rr + 3, H - 48);
+      ctx.moveTo(b.x + rr - 3, H - 48);
+      ctx.lineTo(b.x + rr + 9, H - 48);
+      ctx.moveTo(b.x, H - 48 - rr - 9);
+      ctx.lineTo(b.x, H - 48 - rr + 3);
+      ctx.stroke();
+      ctx.restore();
     } else {
       const a = Math.max(0, 1 - b.t / b.fireTime);
       ctx.save();
@@ -2278,18 +2327,27 @@ function drawBeams() {
 
 function drawParticles() {
   ctx.save();
+  ctx.globalCompositeOperation = 'source-over';
   for (const p of particles) {
+    if (p.kind !== 'smoke') continue;
+    const a = Math.max(0, p.life / p.maxLife);
+    ctx.fillStyle = 'rgba(60,32,96,' + (a * .32).toFixed(3) + ')';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * (1.15 - a * .25), 0, TAU);
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = 'lighter';
+  for (const p of particles) {
+    if (p.kind === 'smoke') continue;
     const a = Math.max(0, p.life / p.maxLife);
     if (p.kind === 'spark') {
-      ctx.globalCompositeOperation = 'lighter';
       ctx.strokeStyle = 'rgba(' + p.rgb + ',' + (a * .9).toFixed(3) + ')';
       ctx.lineWidth = Math.max(1, p.size * .35);
       ctx.beginPath();
       ctx.moveTo(p.x, p.y);
       ctx.lineTo(p.x - p.vx * .022, p.y - p.vy * .022);
       ctx.stroke();
-    } else if (p.kind === 'fire') {
-      ctx.globalCompositeOperation = 'lighter';
+    } else {
       drawGlow(p.sprite, p.x, p.y, p.size * (1 + (1 - a) * .7), a * .85);
       if (a > .55) {
         ctx.fillStyle = 'rgba(255,245,220,' + ((a - .55) * 1.4).toFixed(3) + ')';
@@ -2297,12 +2355,6 @@ function drawParticles() {
         ctx.arc(p.x, p.y, p.size * .08, 0, TAU);
         ctx.fill();
       }
-    } else {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = 'rgba(60,32,96,' + (a * .32).toFixed(3) + ')';
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size * (1.15 - a * .25), 0, TAU);
-      ctx.fill();
     }
   }
   ctx.restore();
@@ -2393,6 +2445,7 @@ function resetGame() {
   player.overdrive = 0;
   player.invuln = 1;
   player.bank = 0;
+  player.trailTimer = 0;
   player.dead = false;
   playerBullets.length = 0;
   enemyBullets.length = 0;
@@ -2410,7 +2463,6 @@ function resetGame() {
   deathTimer = 0;
   shake = 0;
   flash = 0;
-  overdriveBannerShown = false;
   hideBossBar();
   updateHUD(true);
 }
@@ -2434,7 +2486,6 @@ function gameOverNow() {
   renderLeaderboard('gameover-leaderboard');
   renderLeaderboard('menu-leaderboard');
   showScreen('gameover-screen');
-  sfx('gameover');
   updateHUD(true);
 }
 

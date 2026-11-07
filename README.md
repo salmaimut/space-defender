@@ -8,6 +8,7 @@
 - Arena vertikal 9:16 dengan nebula ungu/biru dinamis, starfield parallax, dan asteroid mengambang.
 - Boss alien raksasa (Void Mothership) dengan health bar, formasi escort, dan pola serangan bertahap: aimed burst, fan, spiral, ring, serta laser beam.
 - Efek ledakan partikel api/percikan, shockwave, screen shake, dan hit flash.
+- Render internal 1440×2560 (supersampling 2x) agar tajam di layar HD/retina.
 - Pemain menembak otomatis dengan dual cannon; POWER bar yang terisi dari hit/kill membuka OVERDRIVE (twin laser + spread shot).
 - UI HUD modern: skor, wave, hull, power meter, boss health, pause, dan mute.
 - Leaderboard Top 10 tersimpan di LocalStorage, input call sign 1–15 karakter.
