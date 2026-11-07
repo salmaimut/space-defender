@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Space Defender — Nebula Assault</title>
+<link rel="icon" href="data:,">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -522,6 +523,376 @@
     font-size: clamp(9px, 2cqw, 14px);
   }
 
+  /* ---------- WALLET / MENU ACTIONS ---------- */
+  .menu-wallet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4cqw;
+    width: fit-content;
+    max-width: 100%;
+    margin: 2.2cqw auto 2.4cqw;
+    padding: 1.35cqw 2.4cqw;
+    border-radius: 100px;
+    border: 1px solid rgba(94, 243, 255, .28);
+    background: linear-gradient(100deg, rgba(94, 243, 255, .12), rgba(138, 92, 255, .12));
+    box-shadow: inset 0 0 24px rgba(94, 243, 255, .05), 0 0 20px rgba(94, 243, 255, .08);
+    color: #eaf9ff;
+    font-size: clamp(9px, 2.1cqw, 14px);
+    letter-spacing: .12em;
+  }
+  .menu-wallet .crystal-glyph, .wallet-hud .crystal-glyph, .hangar-wallet .crystal-glyph {
+    color: #78ffe0;
+    text-shadow: 0 0 10px rgba(94, 243, 255, .95), 0 0 24px rgba(94, 243, 255, .45);
+  }
+  .menu-wallet b {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 1.2em;
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(94, 243, 255, .65);
+  }
+  .menu-wallet .wallet-label { color: #8ea0e0; font-size: .78em; font-weight: 700; }
+  .menu-wallet .wallet-ship {
+    max-width: 32cqw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 1.5cqw;
+    border-left: 1px solid rgba(140, 160, 255, .28);
+    color: #ffd36e;
+    font-weight: 800;
+    font-size: .82em;
+  }
+  .action-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, .95fr);
+    gap: 2cqw;
+  }
+  .action-row .btn { margin-top: 0; }
+  .btn.hangar {
+    background: linear-gradient(120deg, rgba(94, 243, 255, .16), rgba(138, 92, 255, .24));
+    border-color: rgba(94, 243, 255, .42);
+    color: #d8fbff;
+    box-shadow: inset 0 0 24px rgba(94, 243, 255, .08), 0 0 22px rgba(94, 243, 255, .12);
+  }
+  .btn.hangar:hover {
+    border-color: #8fffff;
+    color: #ffffff;
+    box-shadow: 0 0 28px rgba(94, 243, 255, .32), inset 0 0 28px rgba(94, 243, 255, .12);
+  }
+  .btn.hangar:active { transform: scale(.985); }
+
+  .wallet-hud {
+    position: absolute;
+    left: 3.2cqw;
+    bottom: calc(3.2cqw + env(safe-area-inset-bottom, 0px));
+    z-index: 12;
+    display: flex;
+    align-items: center;
+    gap: 1.1cqw;
+    padding: 1.2cqw 2cqw;
+    border-radius: 100px;
+    border: 1px solid rgba(94, 243, 255, .25);
+    background: rgba(8, 5, 24, .66);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #eaf9ff;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: clamp(10px, 2.2cqw, 15px);
+    font-weight: 800;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .25s, transform .25s;
+  }
+  .wallet-hud.show { opacity: 1; transform: none; }
+  .wallet-hud .run-gain { color: #8cffda; font-size: .82em; }
+  .wallet-hud .run-gain::before { content: "+"; }
+
+  /* ---------- HANGAR ---------- */
+  .hangar-panel {
+    text-align: left;
+    padding: 4.2cqw;
+  }
+  .hangar-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2cqw;
+  }
+  .hangar-head .kicker { margin-bottom: 1cqw; }
+  .hangar-head h2 {
+    margin-bottom: 0;
+    color: #e7fbff;
+    text-shadow: 0 0 24px rgba(94, 243, 255, .42);
+  }
+  .hangar-close {
+    flex: 0 0 auto;
+    width: clamp(30px, 7cqw, 42px);
+    border-radius: 30%;
+    font-size: clamp(17px, 4.2cqw, 26px);
+    line-height: 1;
+    font-family: ui-monospace, Consolas, monospace;
+    color: #b9c6ff;
+    background: rgba(12, 8, 32, .8);
+  }
+  .hangar-wallet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    margin: 1.8cqw 0 1.6cqw;
+    padding: 1.7cqw 2.1cqw;
+    border-radius: 2.2cqw;
+    border: 1px solid rgba(94, 243, 255, .24);
+    background: linear-gradient(100deg, rgba(94, 243, 255, .1), rgba(138, 92, 255, .12));
+  }
+  .hangar-wallet .balance {
+    display: flex;
+    align-items: center;
+    gap: 1.2cqw;
+    color: #7f90c8;
+    font-size: clamp(8px, 1.8cqw, 12px);
+    letter-spacing: .18em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .hangar-wallet .balance b {
+    font-family: ui-monospace, Consolas, monospace;
+    color: #ffffff;
+    font-size: clamp(18px, 4.2cqw, 30px);
+    letter-spacing: .04em;
+    text-shadow: 0 0 14px rgba(94, 243, 255, .65);
+  }
+  .hangar-wallet .active-ship {
+    max-width: 48%;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #8ea0e0;
+    font-size: clamp(7px, 1.65cqw, 11px);
+    letter-spacing: .16em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .hangar-wallet .active-ship b {
+    display: block;
+    margin-top: .55cqw;
+    color: #ffd36e;
+    font-size: clamp(9px, 2.05cqw, 14px);
+    letter-spacing: .06em;
+  }
+  .hangar-note {
+    margin: 0 0 1cqw;
+    color: #7f8fc8;
+    font-size: clamp(8.5px, 1.75cqw, 12px);
+    line-height: 1.55;
+    letter-spacing: .03em;
+  }
+  .hangar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5cqw;
+    margin: 1.6cqw 0 2.6cqw;
+  }
+  .tier-heading {
+    display: flex;
+    align-items: center;
+    gap: 1.5cqw;
+    margin: 1.4cqw 0 .2cqw;
+    color: var(--tier-color, #8ea0e0);
+    font-size: clamp(8px, 1.75cqw, 12px);
+    letter-spacing: .24em;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .tier-heading::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--tier-color, #8ea0e0), transparent);
+    opacity: .48;
+  }
+  .ship-card {
+    --tier: #8ea0e0;
+    position: relative;
+    display: grid;
+    grid-template-columns: clamp(55px, 12.5cqw, 80px) minmax(0, 1fr) auto;
+    gap: 1.9cqw;
+    align-items: center;
+    padding: 1.7cqw;
+    border-radius: 2.4cqw;
+    border: 1px solid rgba(140, 160, 255, .17);
+    background: linear-gradient(110deg, rgba(24, 16, 58, .82), rgba(8, 5, 22, .9));
+    box-shadow: inset 0 0 26px rgba(94, 243, 255, .025);
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+  }
+  .ship-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 16%; bottom: 16%;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--tier);
+    box-shadow: 0 0 12px var(--tier);
+  }
+  .ship-card:hover { border-color: rgba(140, 190, 255, .38); box-shadow: inset 0 0 30px rgba(94, 243, 255, .06); }
+  .ship-card.equipped {
+    border-color: rgba(94, 243, 255, .64);
+    box-shadow: 0 0 22px rgba(94, 243, 255, .14), inset 0 0 30px rgba(94, 243, 255, .07);
+  }
+  .ship-card.tier-common { --tier: #9fb0cf; }
+  .ship-card.tier-uncommon { --tier: #59e6a8; }
+  .ship-card.tier-rare { --tier: #5eb9ff; }
+  .ship-card.tier-epic { --tier: #c76bff; }
+  .ship-card.tier-legendary { --tier: #ffb347; }
+  .ship-card.tier-mythic { --tier: #ff5ad8; }
+  .ship-preview {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 1.8cqw;
+    border: 1px solid rgba(140, 160, 255, .16);
+    background: radial-gradient(70% 70% at 50% 45%, rgba(94, 243, 255, .12), rgba(8, 5, 24, .78));
+    overflow: hidden;
+  }
+  .ship-preview canvas { display: block; width: 100%; height: 100%; }
+  .ship-num {
+    position: absolute;
+    top: 3%;
+    left: 6%;
+    color: rgba(220, 232, 255, .66);
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: clamp(6px, 1.35cqw, 9px);
+    letter-spacing: .05em;
+  }
+  .ship-top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .8cqw;
+  }
+  .ship-name {
+    color: #f1f7ff;
+    font-size: clamp(11px, 2.45cqw, 17px);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: .02em;
+  }
+  .tier-pill {
+    display: inline-block;
+    padding: .32em .55em;
+    border-radius: 100px;
+    border: 1px solid color-mix(in srgb, var(--tier) 50%, transparent);
+    background: color-mix(in srgb, var(--tier) 12%, transparent);
+    color: var(--tier);
+    font-size: clamp(6px, 1.28cqw, 9px);
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .ship-effect {
+    margin-top: .55cqw;
+    color: #c7d4ff;
+    font-size: clamp(8.5px, 1.82cqw, 12.5px);
+    line-height: 1.35;
+  }
+  .ship-detail {
+    margin-top: .45cqw;
+    color: #7f90c8;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: clamp(6.5px, 1.38cqw, 9.5px);
+    line-height: 1.4;
+    letter-spacing: .01em;
+  }
+  .ship-cost {
+    margin-top: .55cqw;
+    color: #ffd36e;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: clamp(7px, 1.55cqw, 10.5px);
+    font-weight: 800;
+    letter-spacing: .05em;
+  }
+  .ship-cost.free { color: #59e6a8; }
+  .ship-action {
+    min-width: clamp(54px, 13.5cqw, 88px);
+    padding: 1.35cqw 1.2cqw;
+    border-radius: 100px;
+    border: 1px solid rgba(94, 243, 255, .28);
+    background: rgba(94, 243, 255, .08);
+    color: #9ff7ff;
+    font: inherit;
+    font-size: clamp(7px, 1.55cqw, 10.5px);
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s, transform .15s, box-shadow .2s;
+  }
+  .ship-action:hover { background: rgba(94, 243, 255, .2); border-color: #5ef3ff; color: #ffffff; box-shadow: 0 0 16px rgba(94, 243, 255, .22); }
+  .ship-action:active { transform: scale(.96); }
+  .ship-action.buy {
+    border-color: rgba(255, 211, 110, .4);
+    background: rgba(255, 211, 110, .1);
+    color: #ffd36e;
+  }
+  .ship-action.buy:hover { border-color: #ffd36e; background: rgba(255, 211, 110, .2); box-shadow: 0 0 16px rgba(255, 211, 110, .2); }
+  .ship-action.locked {
+    border-color: rgba(255, 107, 138, .3);
+    background: rgba(255, 79, 120, .07);
+    color: #ff8ca4;
+  }
+  .ship-action.equipped {
+    border-color: rgba(89, 230, 168, .34);
+    background: rgba(89, 230, 168, .1);
+    color: #59e6a8;
+    cursor: default;
+  }
+  .ship-price {
+    display: block;
+    margin-top: .32em;
+    color: #ffd36e;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .86em;
+    letter-spacing: .02em;
+  }
+  .hangar-back { margin-top: 0; }
+
+  .result.three { gap: 3.2cqw; }
+  .run-reward {
+    margin: -1cqw 0 2.2cqw;
+    color: #8cffda;
+    font-size: clamp(8.5px, 1.85cqw, 12px);
+    letter-spacing: .14em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .run-reward b { font-family: ui-monospace, Consolas, monospace; font-size: 1.25em; }
+
+  .toast {
+    position: absolute;
+    left: 50%;
+    bottom: 13%;
+    z-index: 40;
+    max-width: 86%;
+    padding: 2cqw 3.2cqw;
+    border-radius: 100px;
+    border: 1px solid rgba(94, 243, 255, .45);
+    background: rgba(8, 5, 24, .94);
+    box-shadow: 0 0 32px rgba(94, 243, 255, .28);
+    color: #eaf9ff;
+    font-size: clamp(9px, 2cqw, 13px);
+    line-height: 1.35;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, 10px);
+    transition: opacity .22s, transform .22s;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
   .pause-panel { max-width: 78%; }
   .hidden { display: none !important; }
 </style>
@@ -588,6 +959,12 @@
     </button>
   </div>
 
+  <div class="wallet-hud" id="walletHud" aria-live="polite">
+    <span class="crystal-glyph">◆</span>
+    <span id="hud-crystals">0</span>
+    <span class="run-gain" id="hud-run">0</span>
+  </div>
+
   <div class="banner" id="banner">
     <div class="banner-title" id="bannerTitle"></div>
     <div class="banner-sub" id="bannerSub"></div>
@@ -598,6 +975,12 @@
       <div class="kicker">// Sector 09 — Deep Space</div>
       <h1>Space<span>Defender</span></h1>
       <p class="tagline">Armada Void menembus nebula. Hancurkan induk alien, isi POWER, lalu lepaskan OVERDRIVE untuk membalas.</p>
+      <div class="menu-wallet" title="Kristal tersimpan permanen di browser ini">
+        <span class="crystal-glyph">◆</span>
+        <b id="menu-crystals">0</b>
+        <span class="wallet-label">KRISTAL</span>
+        <span class="wallet-ship" id="menu-ship-name">GOLDEN DART</span>
+      </div>
       <div class="board-title">Top Pilots</div>
       <table class="leaderboard-table">
         <thead>
@@ -610,7 +993,10 @@
         </thead>
         <tbody id="menu-leaderboard"></tbody>
       </table>
-      <button class="btn primary" id="btn-start">Mulai Misi</button>
+      <div class="action-row">
+        <button class="btn primary" id="btn-start">Mulai Misi</button>
+        <button class="btn hangar" id="btn-hangar">Hangar</button>
+      </div>
       <button class="btn ghost" id="btn-change-name">Ganti Nama</button>
       <div class="hint">
         <kbd>WASD</kbd> / <kbd>← →</kbd> gerak · <kbd>P</kbd> jeda · <kbd>M</kbd> suara<br>
@@ -623,10 +1009,12 @@
     <div class="panel">
       <div class="kicker">// Signal Lost</div>
       <h2>Sector<br>Overrun</h2>
-      <div class="result">
+      <div class="result three">
         <div><span>SCORE</span><b id="final-score">0</b></div>
         <div><span>WAVE</span><b id="final-stage">01</b></div>
+        <div><span>KRISTAL</span><b id="final-crystals">0</b></div>
       </div>
+      <p class="run-reward">◆ <b id="gameover-earned">0</b> kristal tersimpan otomatis</p>
       <div class="board-title">Top Pilots</div>
       <table class="leaderboard-table">
         <thead>
@@ -651,6 +1039,31 @@
       <p class="tagline">Mesin dimatikan sementara. Sektor menunggu.</p>
       <button class="btn primary" id="btn-resume">Lanjutkan</button>
       <button class="btn ghost" id="btn-quit">Keluar ke Menu</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="screen hidden" id="hangar-screen">
+    <div class="panel hangar-panel">
+      <div class="hangar-head">
+        <div>
+          <div class="kicker">// Orbital Drydock</div>
+          <h2>Hangar</h2>
+        </div>
+        <button class="icon-btn hangar-close" id="btn-hangar-close" aria-label="Tutup hangar">×</button>
+      </div>
+      <div class="hangar-wallet">
+        <div class="balance">
+          <span class="crystal-glyph">◆</span>
+          <b id="hangar-crystals">0</b>
+          <span>Kristal</span>
+        </div>
+        <div class="active-ship">Pesawat aktif<b id="hangar-equipped">Golden Dart</b></div>
+      </div>
+      <p class="hangar-note">13 kapal, 5 tier. Semua skin dibeli permanen dengan kristal hasil misi — tanpa transaksi uang asli. Efek pasif langsung aktif saat di-equip.</p>
+      <div class="hangar-list" id="hangar-list"></div>
+      <button class="btn ghost hangar-back" id="btn-hangar-back">Kembali ke Menu</button>
     </div>
   </div>
 
@@ -728,6 +1141,217 @@ function drawGlow(sprite, x, y, size, alpha) {
   ctx.globalAlpha = alpha;
   ctx.drawImage(sprite, x - size / 2, y - size / 2, size, size);
   ctx.globalAlpha = 1;
+}
+
+/* ===================================================================
+   1B. SHIP CATALOG, HANGAR DATA & LOCALSTORAGE WALLET
+   =================================================================== */
+const STARTER_SHIP_ID = 'golden_dart';
+const CRYSTAL_KEY = 'arcade_crystals';
+const OWNED_SHIPS_KEY = 'arcade_ships_owned';
+const EQUIPPED_SHIP_KEY = 'arcade_equipped_ship';
+
+const BASE_BULLET_DAMAGE = 20;
+const BASE_PLAYER_SPEED = 620;
+const BASE_FIRE_COOLDOWN = .118;
+
+const TIER_META = {
+  1: { label: 'TIER 1 · COMMON', color: '#9fb0cf' },
+  2: { label: 'TIER 2 · UNCOMMON', color: '#59e6a8' },
+  3: { label: 'TIER 3 · RARE', color: '#5eb9ff' },
+  4: { label: 'TIER 4 · ULTRA RARE / EPIC', color: '#c76bff' },
+  5: { label: 'TIER 5 · LEGENDARY & MYTHIC', color: '#ffb347' }
+};
+
+const BASE_SHIP_STATS = {
+  damage: 1,
+  rate: 1,
+  speed: 1,
+  pointer: 1,
+  power: 1,
+  crystal: 1,
+  shots: 1,
+  spread: 0,
+  bulletScale: 1,
+  extraHull: 0,
+  damageIgnore: 0,
+  dualLaser: false,
+  tripleLaser: false,
+  bossCrit: 0,
+  bossCritMult: 1,
+  bossDamage: 1
+};
+
+const SHIP_CATALOG = [
+  {
+    id: STARTER_SHIP_ID, num: 8, name: 'Golden Dart', tier: 1, rarity: 'Common', rarityClass: 'common',
+    price: 0, shape: 'dart', role: 'Interceptor Standar',
+    effect: 'Standar tunggal, kecepatan seimbang.',
+    detail: 'DMG 100% · RATE 100% · SPEED 100% · HULL 3',
+    palette: { hull: '#ffe08a', light: '#ffb52c', mid: '#e86e00', dark: '#651c00', accent: '#ffe27a', glass: '#1c87b5', bullet: '255,200,80', trail: '255,160,40' },
+    stats: {}
+  },
+  {
+    id: 'crimson_striker', num: 13, name: 'Crimson Striker', tier: 2, rarity: 'Uncommon', rarityClass: 'uncommon',
+    price: 300, shape: 'striker', role: 'Pengejar Merah',
+    effect: 'Damage peluru +10%.',
+    detail: 'DMG 110% · RATE 100% · 1 kanon presisi',
+    palette: { hull: '#ffe7dc', light: '#ff8a82', mid: '#c92b3d', dark: '#4a0711', accent: '#ff9b74', glass: '#37d8f2', bullet: '255,110,110', trail: '255,74,90' },
+    stats: { damage: 1.10 }
+  },
+  {
+    id: 'toxic_beetle', num: 14, name: 'Toxic Beetle', tier: 2, rarity: 'Uncommon', rarityClass: 'uncommon',
+    price: 450, shape: 'beetle', role: 'Benteng Bio',
+    effect: 'Ketahanan Hull/Power +15% lebih tebal.',
+    detail: 'HULL 115% (15% blok) · POWER 115% · HULL 3',
+    palette: { hull: '#eaffcf', light: '#b6f05a', mid: '#3e8a28', dark: '#0d2608', accent: '#d4ff5c', glass: '#1c6b36', bullet: '185,255,95', trail: '150,255,70' },
+    stats: { damageIgnore: .15, power: 1.15 }
+  },
+  {
+    id: 'nebula_violet', num: 15, name: 'Nebula Violet', tier: 2, rarity: 'Uncommon', rarityClass: 'uncommon',
+    price: 600, shape: 'crescent', role: 'Penyapu Nebula',
+    effect: 'Kecepatan tembak (fire rate) +10% lebih cepat.',
+    detail: 'RATE 110% · DMG 100% · cooldown 10% lebih singkat',
+    palette: { hull: '#e9c8ff', light: '#b46bff', mid: '#6a24c6', dark: '#210542', accent: '#ffd54a', glass: '#77ffad', bullet: '205,120,255', trail: '175,95,255' },
+    stats: { rate: 1.10 }
+  },
+  {
+    id: 'acid_viper', num: 20, name: 'Acid Viper', tier: 3, rarity: 'Rare', rarityClass: 'rare',
+    price: 950, shape: 'viper', role: 'Ular Asam',
+    effect: 'Proyektil sedikit melebar, damage +25%.',
+    detail: 'DMG 125% · sebaran ±2.6° · proyektil 12% lebih besar',
+    palette: { hull: '#e5ffad', light: '#b8e85a', mid: '#4e8426', dark: '#172a06', accent: '#ffe24a', glass: '#1c4a22', bullet: '210,255,90', trail: '180,255,70' },
+    stats: { damage: 1.25, spread: .045, bulletScale: 1.12 }
+  },
+  {
+    id: 'bronze_vanguard', num: 21, name: 'Bronze Vanguard', tier: 3, rarity: 'Rare', rarityClass: 'rare',
+    price: 1200, shape: 'vanguard', role: 'Pengawal Perunggu',
+    effect: 'Bonus pasif perolehan kristal ekstra +15%.',
+    detail: 'CRYSTAL +15% · DMG 100% · semua sumber kristal misi',
+    palette: { hull: '#ffe2a0', light: '#ffb347', mid: '#a95b12', dark: '#3a1803', accent: '#ffd369', glass: '#2b6b75', bullet: '255,180,90', trail: '255,140,55' },
+    stats: { crystal: 1.15 }
+  },
+  {
+    id: 'shadow_phantom', num: 22, name: 'Shadow Phantom', tier: 3, rarity: 'Rare', rarityClass: 'rare',
+    price: 1500, shape: 'phantom', role: 'Siluman Bayangan',
+    effect: 'Kelincahan gerak respons +30%.',
+    detail: 'SPEED +30% · respons pointer +30% · DMG 100%',
+    palette: { hull: '#9aa3cf', light: '#626a9f', mid: '#2b2b54', dark: '#090817', accent: '#5ce5ff', glass: '#2bd8ff', bullet: '130,180,255', trail: '90,130,255' },
+    stats: { speed: 1.30, pointer: 1.30 }
+  },
+  {
+    id: 'neon_block', num: 23, name: 'Neon Block', tier: 4, rarity: 'Epic', rarityClass: 'epic',
+    price: 2200, shape: 'block', role: 'Prototipe Neon',
+    effect: 'Otomatis menggunakan dual laser sejak awal.',
+    detail: 'DUAL LASER pierce · DMG total 110% · tanpa Overdrive',
+    palette: { hull: '#e4d5ff', light: '#a772ff', mid: '#4d1d91', dark: '#19052f', accent: '#c9ff4a', glass: '#62ff7d', bullet: '195,120,255', trail: '170,90,255' },
+    stats: { dualLaser: true, damage: 1.10 }
+  },
+  {
+    id: 'solar_spear', num: 24, name: 'Solar Spear', tier: 4, rarity: 'Epic', rarityClass: 'epic',
+    price: 2800, shape: 'spear', role: 'Tombak Surya',
+    effect: 'Critical hit masif khusus saat melawan Boss.',
+    detail: 'CRIT BOSS 25% · ×2.5 damage · DMG dasar 100%',
+    palette: { hull: '#eaf7ff', light: '#7fb9ff', mid: '#2452bb', dark: '#061538', accent: '#ffd84a', glass: '#5cdcff', bullet: '255,220,90', trail: '120,170,255' },
+    stats: { bossCrit: .25, bossCritMult: 2.5 }
+  },
+  {
+    id: 'pink_valkyrie', num: 25, name: 'Pink Valkyrie', tier: 4, rarity: 'Epic', rarityClass: 'epic',
+    price: 3500, shape: 'valkyrie', role: 'Sayap Valkyrie',
+    effect: 'Sebaran tembakan luas, damage +50%.',
+    detail: '5 arah · total DMG 150% · sebaran lebar ±15°',
+    palette: { hull: '#ffe5f6', light: '#ff92df', mid: '#c02491', dark: '#40072c', accent: '#ff69c9', glass: '#4ce8ff', bullet: '255,120,220', trail: '255,80,200' },
+    stats: { damage: 1.5, shots: 5, spread: .26 }
+  },
+  {
+    id: 'emerald_stinger', num: 26, name: 'Emerald Stinger', tier: 4, rarity: 'Epic', rarityClass: 'epic',
+    price: 4200, shape: 'stinger', role: 'Sengat Zamrud',
+    effect: 'Bar Overdrive/Power terisi 2x lebih cepat.',
+    detail: 'POWER 200% · DMG 100% · RATE 100%',
+    palette: { hull: '#dcfff1', light: '#63f2b3', mid: '#0a7b55', dark: '#03291b', accent: '#5dffb5', glass: '#0f5841', bullet: '90,255,175', trail: '60,255,150' },
+    stats: { power: 2 }
+  },
+  {
+    id: 'blue_titan', num: 29, name: 'Blue Titan', tier: 5, rarity: 'Legendary', rarityClass: 'legendary',
+    price: 6000, shape: 'titan', role: 'Kapal Tempur Baja',
+    effect: 'Kapal tempur baja berat, max power & daya hancur tinggi.',
+    detail: 'DMG 145% · HULL 4 (+1) · POWER 130% · SPEED 90%',
+    palette: { hull: '#e6f8ff', light: '#78c8ff', mid: '#1d66b0', dark: '#041f3d', accent: '#ff6b4a', glass: '#ff6a6a', bullet: '110,195,255', trail: '75,165,255' },
+    stats: { damage: 1.45, extraHull: 1, power: 1.30, speed: .90, bulletScale: 1.35 }
+  },
+  {
+    id: 'golden_sovereign', num: 30, name: 'Golden Sovereign', tier: 5, rarity: 'Mythic', rarityClass: 'mythic',
+    price: 10000, shape: 'sovereign', role: 'Mahkota Emas',
+    effect: 'Senjata triple laser pamungkas, kekuatan penumpas boss terkuat.',
+    detail: 'TRIPLE LASER pierce · total DMG 190% · BOSS DMG +25%',
+    palette: { hull: '#fff5c8', light: '#ffd34f', mid: '#c07c08', dark: '#3d2100', accent: '#ffb000', glass: '#ff5a5a', bullet: '255,225,110', trail: '255,190,60' },
+    stats: { damage: 1.9, tripleLaser: true, bossDamage: 1.25, power: 1.15, bulletScale: 1.2 }
+  }
+];
+
+SHIP_CATALOG.forEach((ship) => {
+  ship.stats = Object.assign({}, BASE_SHIP_STATS, ship.stats);
+});
+
+const SHIP_BY_ID = {};
+SHIP_CATALOG.forEach((ship) => { SHIP_BY_ID[ship.id] = ship; });
+
+const SHIP_GLOW = {};
+SHIP_CATALOG.forEach((ship) => {
+  SHIP_GLOW[ship.id] = {
+    bullet: makeGlow(ship.palette.bullet, 96),
+    trail: makeGlow(ship.palette.trail, 160),
+    trailSmall: makeGlow(ship.palette.trail, 64)
+  };
+});
+
+function loadCrystalBalance() {
+  try {
+    const raw = parseInt(localStorage.getItem(CRYSTAL_KEY), 10);
+    if (!Number.isFinite(raw) || raw < 0) return 0;
+    return Math.min(9999999, raw);
+  } catch (e) {
+    return 0;
+  }
+}
+
+function loadOwnedShips() {
+  let saved = [];
+  try {
+    const raw = localStorage.getItem(OWNED_SHIPS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (Array.isArray(parsed)) saved = parsed.filter((id) => typeof id === 'string' && SHIP_BY_ID[id]);
+  } catch (e) {
+    saved = [];
+  }
+  if (!saved.includes(STARTER_SHIP_ID)) saved.unshift(STARTER_SHIP_ID);
+  return Array.from(new Set(saved));
+}
+
+function loadEquippedShipId() {
+  try {
+    const saved = localStorage.getItem(EQUIPPED_SHIP_KEY);
+    if (saved && SHIP_BY_ID[saved]) return saved;
+  } catch (e) {}
+  return STARTER_SHIP_ID;
+}
+
+let crystals = loadCrystalBalance();
+let ownedShips = loadOwnedShips();
+let equippedShipId = loadEquippedShipId();
+if (!ownedShips.includes(equippedShipId)) equippedShipId = STARTER_SHIP_ID;
+let activeShip = SHIP_BY_ID[equippedShipId] || SHIP_BY_ID[STARTER_SHIP_ID];
+let runCrystals = 0;
+
+function saveCrystalBalance() {
+  try { localStorage.setItem(CRYSTAL_KEY, String(crystals)); } catch (e) {}
+}
+
+function saveHangarState() {
+  try {
+    localStorage.setItem(OWNED_SHIPS_KEY, JSON.stringify(ownedShips));
+    localStorage.setItem(EQUIPPED_SHIP_KEY, equippedShipId);
+  } catch (e) {}
 }
 
 /* ===================================================================
@@ -826,6 +1450,30 @@ function sfx(name) {
     tone(440, 880, .25, 'triangle', .06);
     tone(660, 1320, .25, 'triangle', .05, .1);
     tone(880, 1760, .3, 'triangle', .04, .2);
+  } else if (name === 'crystal') {
+    if (now - (lastSoundAt.crystal || 0) < 70) return;
+    lastSoundAt.crystal = now;
+    tone(1650, 2380, .07, 'sine', .018);
+    tone(2200, 2900, .05, 'sine', .012, .04);
+  } else if (name === 'crit') {
+    if (now - (lastSoundAt.crit || 0) < 80) return;
+    lastSoundAt.crit = now;
+    noiseBurst(.16, .1, 3200);
+    tone(180, 920, .18, 'sawtooth', .045);
+    tone(920, 1880, .16, 'triangle', .028, .04);
+  } else if (name === 'shield') {
+    tone(720, 1480, .18, 'sine', .04);
+    tone(1480, 900, .22, 'triangle', .025, .08);
+  } else if (name === 'buy') {
+    tone(420, 760, .14, 'triangle', .05);
+    tone(640, 1040, .16, 'triangle', .045, .09);
+    tone(860, 1480, .24, 'triangle', .04, .18);
+  } else if (name === 'equip') {
+    tone(520, 1060, .12, 'square', .025);
+    tone(1060, 1560, .16, 'triangle', .02, .07);
+  } else if (name === 'deny') {
+    tone(180, 92, .16, 'sawtooth', .04);
+    tone(130, 70, .2, 'square', .025, .08);
   } else if (name === 'start') {
     tone(300, 900, .25, 'triangle', .07);
     tone(600, 1500, .3, 'triangle', .04, .12);
@@ -855,10 +1503,15 @@ window.addEventListener('keydown', (e) => {
   const typing = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA');
   if (e.code === 'Escape') {
     const modal = document.getElementById('username-modal');
+    const hangar = document.getElementById('hangar-screen');
     if (!modal.classList.contains('hidden')) {
       showScreen('menu-screen');
       renderLeaderboard('menu-leaderboard');
       if (typing) e.target.blur();
+      return;
+    }
+    if (!hangar.classList.contains('hidden')) {
+      closeHangar();
       return;
     }
   }
@@ -868,6 +1521,9 @@ window.addEventListener('keydown', (e) => {
   initAudio();
   if (e.code === 'KeyP' || e.code === 'Escape') togglePause();
   if (e.code === 'KeyM') toggleSound();
+  if (e.code === 'KeyH' && gameState === STATE.MENU && !document.getElementById('menu-screen').classList.contains('hidden')) {
+    openHangar();
+  }
   if (e.code === 'Enter' && gameState === STATE.MENU && !document.getElementById('menu-screen').classList.contains('hidden')) {
     document.getElementById('btn-start').click();
   }
@@ -893,8 +1549,9 @@ canvas.addEventListener('pointerdown', (e) => {
 canvas.addEventListener('pointermove', (e) => {
   if (!dragging || dragPointerId !== e.pointerId || gameState !== STATE.PLAYING) return;
   const p = toLogical(e);
-  player.x = clamp(player.x + (p.x - lastPointer.x) * 1.35, 30, W - 30);
-  player.y = clamp(player.y + (p.y - lastPointer.y) * 1.05, H * .46, H - 54);
+  const agility = activeShip.stats.pointer;
+  player.x = clamp(player.x + (p.x - lastPointer.x) * 1.35 * agility, 30, W - 30);
+  player.y = clamp(player.y + (p.y - lastPointer.y) * 1.05 * agility, H * .46, H - 54);
   lastPointer = p;
   e.preventDefault();
 });
@@ -933,6 +1590,7 @@ const escorts = [];
 const particles = [];
 const shockwaves = [];
 const beams = [];
+const floatTexts = [];
 let bulletSeq = 0;
 let escortSeq = 0;
 
@@ -1028,22 +1686,82 @@ function spawnPlayerBullet(x, y, vx, vy, w, h, dmg, type, rgb, sprite, pierce) {
   });
 }
 
+function firePlayerShot(offsetX, angle, dmg, type, w, h, pierce, rgb, sprite) {
+  const speed = type === 'laser' || type === 'odlaser' ? 2100 : 1540;
+  spawnPlayerBullet(
+    player.x + offsetX,
+    player.y - 30,
+    Math.sin(angle) * speed,
+    -Math.cos(angle) * speed,
+    w, h, dmg, type, rgb, sprite, pierce
+  );
+}
+
 function shootPlayer() {
+  const ship = activeShip;
+  const st = ship.stats;
+  const shipGlow = SHIP_GLOW[ship.id].bullet;
+  const rgb = ship.palette.bullet;
   const od = player.overdrive > 0;
-  const y = player.y - 30;
-  spawnPlayerBullet(player.x - 13, y, 0, -1500, 5, 26, 16, 'bolt', '94,243,255', GLOW.cyan);
-  spawnPlayerBullet(player.x + 13, y, 0, -1500, 5, 26, 16, 'bolt', '94,243,255', GLOW.cyan);
+  const dmg = BASE_BULLET_DAMAGE * st.damage;
+  const scale = st.bulletScale;
+
+  if (st.tripleLaser) {
+    for (let i = -1; i <= 1; i++) {
+      firePlayerShot(i * 17, i * .034, dmg / 3, 'laser', 7.5 * scale, 52 * scale, true, rgb, shipGlow);
+    }
+  } else if (st.dualLaser) {
+    for (const side of [-1, 1]) {
+      firePlayerShot(side * 13, side * .012, dmg * .55, 'laser', 6.5 * scale, 40 * scale, true, rgb, shipGlow);
+    }
+  } else if (st.shots > 1) {
+    const count = st.shots;
+    const step = (st.spread * 2) / (count - 1);
+    for (let i = 0; i < count; i++) {
+      const angle = -st.spread + step * i;
+      firePlayerShot(Math.sin(angle) * 14, angle, dmg / count, 'spread', 5 * scale, 22 * scale, false, rgb, shipGlow);
+    }
+  } else {
+    const angle = st.spread ? rand(-st.spread, st.spread) : 0;
+    firePlayerShot(0, angle, dmg, scale > 1.05 ? 'heavy' : 'bolt', 5.5 * scale, 28 * scale, false, rgb, shipGlow);
+  }
+
   if (od) {
-    spawnPlayerBullet(player.x, y - 6, 0, -2200, 12, 48, 32, 'laser', '255,79,216', GLOW.magenta, true);
-    spawnPlayerBullet(player.x - 20, y + 4, -250, -1450, 5, 20, 11, 'wing', '255,79,216', GLOW.magenta);
-    spawnPlayerBullet(player.x + 20, y + 4, 250, -1450, 5, 20, 11, 'wing', '255,79,216', GLOW.magenta);
+    firePlayerShot(0, 0, dmg * .9, 'odlaser', 12 * scale, 52 * scale, true, '255,79,216', GLOW.magenta);
+    firePlayerShot(-22, -.18, dmg * .42, 'wing', 5, 20, false, '255,79,216', GLOW.magenta);
+    firePlayerShot(22, .18, dmg * .42, 'wing', 5, 20, false, '255,79,216', GLOW.magenta);
   }
   sfx('shoot');
 }
 
+function addFloatingText(text, x, y, color, size) {
+  floatTexts.push({
+    text, x, y,
+    vy: -46,
+    life: .95,
+    maxLife: .95,
+    color: color || '#8cffda',
+    size: size || 17
+  });
+  if (floatTexts.length > 42) floatTexts.shift();
+}
+
+function awardCrystals(baseAmount, x, y) {
+  const gain = Math.max(1, Math.round(baseAmount * activeShip.stats.crystal));
+  crystals = Math.min(9999999, crystals + gain);
+  runCrystals += gain;
+  saveCrystalBalance();
+  if (typeof x === 'number' && typeof y === 'number') {
+    addFloatingText('+' + gain + ' ◆', x, y - 14, '#8cffda', 16);
+  }
+  updateCrystalUI();
+  sfx('crystal');
+  return gain;
+}
+
 function addPower(amount) {
   if (player.overdrive > 0 || player.dead) return;
-  player.power = Math.min(100, player.power + amount);
+  player.power = Math.min(100, player.power + amount * activeShip.stats.power);
   if (player.power >= 100 && gameState === STATE.PLAYING) activateOverdrive();
 }
 
@@ -1060,9 +1778,9 @@ function activateOverdrive() {
 
 /* ---------- escorts ---------- */
 const ESCORT_TYPES = {
-  drone:   { w: 54, h: 46, hp: 30,  score: 120, rgb: '255,140,70',  glow: GLOW.orange,  fire: 2.4 },
-  striker: { w: 66, h: 52, hp: 58,  score: 220, rgb: '255,79,216',  glow: GLOW.magenta, fire: 2.7 },
-  orb:     { w: 74, h: 74, hp: 96,  score: 340, rgb: '138,92,255',  glow: GLOW.purple,  fire: 3.1 }
+  drone:   { w: 54, h: 46, hp: 30,  score: 120, crystal: 4, rgb: '255,140,70',  glow: GLOW.orange,  fire: 2.4 },
+  striker: { w: 66, h: 52, hp: 58,  score: 220, crystal: 6, rgb: '255,79,216',  glow: GLOW.magenta, fire: 2.7 },
+  orb:     { w: 74, h: 74, hp: 96,  score: 340, crystal: 9, rgb: '138,92,255',  glow: GLOW.purple,  fire: 3.1 }
 };
 
 function spawnEscort(type, x, targetX, targetY, delayY) {
@@ -1078,6 +1796,7 @@ function spawnEscort(type, x, targetX, targetY, delayY) {
     hp: cfg.hp * hpMul,
     maxHp: cfg.hp * hpMul,
     score: cfg.score,
+    crystal: cfg.crystal,
     rgb: cfg.rgb,
     glow: cfg.glow,
     targetX,
@@ -1330,6 +2049,16 @@ function escortRect(e) {
 
 function damagePlayer() {
   if (gameState !== STATE.PLAYING || player.dead || player.invuln > 0) return;
+  const st = activeShip.stats;
+  if (st.damageIgnore > 0 && Math.random() < st.damageIgnore) {
+    player.invuln = .9;
+    addFloatingText('HULL BLOCK', player.x, player.y - 42, '#9dffbf', 16);
+    sparkBurst(player.x, player.y, 14, '120,255,180', GLOW.cyan);
+    shockwaves.push({ x: player.x, y: player.y, r: 10, max: 96, life: .4, maxLife: .4, rgb: '120,255,180' });
+    sfx('shield');
+    updateHUD(true);
+    return;
+  }
   lives--;
   player.invuln = 2.4;
   player.power = Math.max(0, player.power - 22);
@@ -1364,13 +2093,24 @@ function damageEscort(e, dmg, hx, hy) {
     score += e.score;
     addPower(10);
     explode(e.x, e.y, { count: 20, power: 1.15, rgb: e.rgb, sprite: e.glow });
+    awardCrystals(e.crystal, e.x, e.y - 8);
     sfx('pop');
     updateHUD();
   }
 }
 
 function damageBoss(dmg, hx, hy) {
-  boss.hp -= dmg;
+  const st = activeShip.stats;
+  let finalDmg = dmg * st.bossDamage;
+  const crit = st.bossCrit > 0 && Math.random() < st.bossCrit;
+  if (crit) {
+    finalDmg *= st.bossCritMult;
+    addFloatingText('CRIT ×' + st.bossCritMult, hx, hy - 10, '#ffd36e', 19);
+    sparkBurst(hx, hy, 14, '255,225,120', GLOW.gold);
+    shockwaves.push({ x: hx, y: hy, r: 6, max: 70, life: .32, maxLife: .32, rgb: '255,211,110' });
+    sfx('crit');
+  }
+  boss.hp -= finalDmg;
   boss.hitFlash = 1;
   score += 5;
   addPower(.55);
@@ -1405,6 +2145,7 @@ function killBoss() {
 
   score += 3000 * stage;
   addPower(40);
+  awardCrystals(90 + stage * 10, boss.x, boss.y - 30);
   stage++;
   waveDelay = 2.8;
   showBanner('SECTOR CLEARED', 'WAVE ' + pad(stage - 1, 2) + ' DESTROYED', '#5ef3ff');
@@ -1461,7 +2202,7 @@ function updatePlayer(dt) {
   player.cooldown -= dt;
   if (player.cooldown <= 0) {
     shootPlayer();
-    player.cooldown = player.overdrive > 0 ? .078 : .125;
+    player.cooldown = (player.overdrive > 0 ? .073 : BASE_FIRE_COOLDOWN) / activeShip.stats.rate;
   }
   if (player.invuln > 0) player.invuln -= dt;
 
@@ -1692,6 +2433,13 @@ function updateEffects(dt) {
     s.life -= dt;
     if (s.life <= 0) shockwaves.splice(i, 1);
   }
+  for (let i = floatTexts.length - 1; i >= 0; i--) {
+    const f = floatTexts[i];
+    f.life -= dt;
+    f.y += f.vy * dt;
+    f.vy *= Math.max(0, 1 - dt * 2.2);
+    if (f.life <= 0) floatTexts.splice(i, 1);
+  }
   shake = Math.max(0, shake - dt * 46);
   flash = Math.max(0, flash - dt * 2.6);
 }
@@ -1731,6 +2479,18 @@ function updateHUD(force) {
   updateHUD.cache = cache;
 }
 updateHUD.cache = { score: -1, stage: -1, lives: -1, power: -1, od: null, boss: -1 };
+
+function rebuildLifePips(count) {
+  livesEl.textContent = '';
+  lifeEls.length = 0;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'life';
+    livesEl.appendChild(el);
+    lifeEls.push(el);
+  }
+  updateHUD.cache.lives = -1;
+}
 
 function updatePlaying(dt) {
   updatePlayer(dt);
@@ -1845,6 +2605,151 @@ function renderLeaderboard(tbodyId) {
     tr.append(rank, name, sc, date);
     tbody.appendChild(tr);
   });
+}
+
+/* ===================================================================
+   6B. HANGAR, WALLET & SHIP SHOP UI
+   =================================================================== */
+let toastTimer = 0;
+
+function formatCrystals(value) {
+  return Math.max(0, Math.round(value)).toLocaleString('id-ID');
+}
+
+function updateCrystalUI() {
+  const total = formatCrystals(crystals);
+  menuCrystalsEl.textContent = total;
+  hangarCrystalsEl.textContent = total;
+  hudCrystalsEl.textContent = total;
+  hudRunEl.textContent = formatCrystals(runCrystals);
+  menuShipNameEl.textContent = activeShip.name.toUpperCase();
+  hangarEquippedEl.textContent = activeShip.name;
+}
+
+function showToast(message) {
+  toastEl.textContent = message;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
+}
+
+function applyShipToRun() {
+  activeShip = SHIP_BY_ID[equippedShipId] || SHIP_BY_ID[STARTER_SHIP_ID];
+}
+
+function handleShipAction(ship) {
+  if (ship.id === equippedShipId) return;
+  const owned = ownedShips.includes(ship.id);
+  if (!owned) {
+    if (crystals < ship.price) {
+      sfx('deny');
+      showToast('Kristal kurang ' + formatCrystals(ship.price - crystals) + ' ◆ untuk ' + ship.name + '.');
+      return;
+    }
+    crystals -= ship.price;
+    ownedShips.push(ship.id);
+    saveCrystalBalance();
+    sfx('buy');
+    showToast(ship.name + ' dibeli! −' + formatCrystals(ship.price) + ' ◆');
+  }
+  equippedShipId = ship.id;
+  activeShip = ship;
+  saveHangarState();
+  updateCrystalUI();
+  renderHangar();
+  sfx('equip');
+  showToast(ship.name + ' terpasang. Status pesawat aktif!');
+}
+
+function makeShipCard(ship) {
+  const owned = ownedShips.includes(ship.id);
+  const equipped = ship.id === equippedShipId;
+  const card = document.createElement('article');
+  card.className = 'ship-card tier-' + ship.rarityClass + (equipped ? ' equipped' : '');
+
+  const preview = document.createElement('div');
+  preview.className = 'ship-preview';
+  const thumb = document.createElement('canvas');
+  thumb.width = 160;
+  thumb.height = 160;
+  thumb.setAttribute('aria-hidden', 'true');
+  const num = document.createElement('span');
+  num.className = 'ship-num';
+  num.textContent = '#' + pad(ship.num, 2);
+  preview.append(thumb, num);
+
+  const info = document.createElement('div');
+  info.className = 'ship-info';
+  const top = document.createElement('div');
+  top.className = 'ship-top';
+  const name = document.createElement('h3');
+  name.className = 'ship-name';
+  name.textContent = ship.name;
+  const tier = document.createElement('span');
+  tier.className = 'tier-pill';
+  tier.textContent = 'TIER ' + ship.tier + ' · ' + ship.rarity.toUpperCase();
+  top.append(name, tier);
+  const effect = document.createElement('p');
+  effect.className = 'ship-effect';
+  effect.textContent = ship.effect;
+  const detail = document.createElement('p');
+  detail.className = 'ship-detail';
+  detail.textContent = ship.detail;
+  const cost = document.createElement('p');
+  cost.className = 'ship-cost' + (ship.price === 0 ? ' free' : '');
+  cost.textContent = ship.price === 0 ? 'HARGA · GRATIS (AWAL)' : 'HARGA · ◆ ' + formatCrystals(ship.price);
+  info.append(top, effect, detail, cost);
+
+  const action = document.createElement('button');
+  action.type = 'button';
+  if (equipped) {
+    action.className = 'ship-action equipped';
+    action.textContent = 'TERPASANG';
+    action.disabled = true;
+  } else if (owned) {
+    action.className = 'ship-action';
+    action.textContent = 'PASANG';
+  } else {
+    action.className = 'ship-action ' + (crystals >= ship.price ? 'buy' : 'locked');
+    action.textContent = ship.price === 0 ? 'AMBIL' : 'BELI';
+    const price = document.createElement('span');
+    price.className = 'ship-price';
+    price.textContent = ship.price === 0 ? 'GRATIS' : '◆ ' + formatCrystals(ship.price);
+    action.appendChild(price);
+  }
+  action.addEventListener('click', () => handleShipAction(ship));
+
+  card.append(preview, info, action);
+  drawShipPreview(thumb, ship);
+  return card;
+}
+
+function renderHangar() {
+  hangarListEl.textContent = '';
+  for (let tier = 1; tier <= 5; tier++) {
+    const ships = SHIP_CATALOG.filter((ship) => ship.tier === tier);
+    if (!ships.length) continue;
+    const heading = document.createElement('div');
+    heading.className = 'tier-heading';
+    heading.style.setProperty('--tier-color', TIER_META[tier].color);
+    heading.textContent = TIER_META[tier].label;
+    hangarListEl.appendChild(heading);
+    ships.forEach((ship) => hangarListEl.appendChild(makeShipCard(ship)));
+  }
+  updateCrystalUI();
+}
+
+function openHangar() {
+  if (gameState !== STATE.MENU) return;
+  initAudio();
+  renderHangar();
+  showScreen('hangar-screen');
+}
+
+function closeHangar() {
+  showScreen('menu-screen');
+  renderLeaderboard('menu-leaderboard');
+  updateCrystalUI();
 }
 
 /* ===================================================================
@@ -2146,63 +3051,602 @@ function drawEscort(e) {
   ctx.restore();
 }
 
+/* ---------- procedural ship renderer (game + hangar previews) ---------- */
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((ch) => ch + ch).join('') : h;
+  const n = parseInt(full, 16);
+  return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + alpha + ')';
+}
+
+function paintShipPoly(c, pts, fill, stroke, lineWidth) {
+  c.beginPath();
+  for (let i = 0; i < pts.length; i++) {
+    if (i === 0) c.moveTo(pts[i][0], pts[i][1]);
+    else c.lineTo(pts[i][0], pts[i][1]);
+  }
+  c.closePath();
+  c.fillStyle = fill;
+  c.fill();
+  if (stroke) {
+    c.strokeStyle = stroke;
+    c.lineWidth = lineWidth || 1.4;
+    c.stroke();
+  }
+}
+
+function drawShipCockpit(c, p, x, y, rx, ry) {
+  c.beginPath();
+  c.ellipse(x, y, rx, ry, 0, 0, TAU);
+  c.fillStyle = p.glass;
+  c.fill();
+  c.strokeStyle = hexToRgba(p.accent, .78);
+  c.lineWidth = 1;
+  c.stroke();
+  c.beginPath();
+  c.ellipse(x - rx * .28, y - ry * .3, rx * .34, ry * .34, 0, 0, TAU);
+  c.fillStyle = hexToRgba(p.light, .88);
+  c.fill();
+}
+
+const SHIP_ENGINES = {
+  dart: [[-16, 17], [16, 17]],
+  striker: [[-13, 23], [13, 23]],
+  beetle: [[-15, 24], [0, 26], [15, 24]],
+  crescent: [[-12, 24], [12, 24]],
+  viper: [[-12, 20], [12, 20]],
+  vanguard: [[-14, 24], [0, 26], [14, 24]],
+  phantom: [[-10, 22], [10, 22]],
+  block: [[-19, 21], [0, 24], [19, 21]],
+  spear: [[-9, 24], [9, 24]],
+  valkyrie: [[-12, 23], [0, 25], [12, 23]],
+  stinger: [[-8, 24], [8, 24]],
+  titan: [[-24, 26], [-16, 28], [16, 28], [24, 26]],
+  sovereign: [[-20, 25], [0, 28], [20, 25]]
+};
+
+function drawHullNumber(c, p, num, x, y, size) {
+  c.save();
+  c.font = '900 ' + (size || 10.5) + 'px "Trebuchet MS", sans-serif';
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.lineWidth = 2.4;
+  c.strokeStyle = hexToRgba(p.dark, .88);
+  c.strokeText(String(num), x, y);
+  c.fillStyle = hexToRgba(p.hull, .94);
+  c.fillText(String(num), x, y);
+  c.restore();
+}
+
+const SHIP_SHAPES = {
+  dart(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -16, 0, 20);
+    wing.addColorStop(0, p.light);
+    wing.addColorStop(.55, p.mid);
+    wing.addColorStop(1, p.dark);
+    paintShipPoly(c, [[-8, -12], [-42, -3], [-39, 17], [-17, 14], [-10, 3]], wing, hexToRgba(p.accent, .9), 1.4);
+    paintShipPoly(c, [[8, -12], [42, -3], [39, 17], [17, 14], [10, 3]], wing, hexToRgba(p.accent, .9), 1.4);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 7, -9], [side * 37, -2], [side * 34, 8], [side * 9, 4]], hexToRgba(p.hull, .3), null);
+      c.fillStyle = hexToRgba(p.dark, .72);
+      c.fillRect(side * 39 - 2, 2, 4, 12);
+      c.fillStyle = hexToRgba(p.accent, .85);
+      c.fillRect(side * 37 - 4, 4, 8, 2);
+    }
+    const hull = c.createLinearGradient(0, -46, 0, 33);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.42, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -46], [7, -20], [10, 4], [8, 27], [0, 33], [-8, 27], [-10, 4], [-7, -20]], hull, hexToRgba(p.accent, .95), 1.4);
+    paintShipPoly(c, [[0, -40], [3, -12], [0, 18], [-3, -12]], hexToRgba(p.dark, .55), null);
+    for (const side of [-1, 1]) {
+      c.save();
+      c.translate(side * 21, -8);
+      c.beginPath();
+      c.ellipse(0, 0, 7, 12, 0, 0, TAU);
+      c.fillStyle = p.dark;
+      c.fill();
+      c.strokeStyle = hexToRgba(p.hull, .48);
+      c.lineWidth = 1;
+      c.stroke();
+      c.beginPath();
+      c.ellipse(0, -9, 7, 3, 0, 0, TAU);
+      c.fillStyle = hexToRgba(p.light, .75);
+      c.fill();
+      c.restore();
+    }
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 8, 14], [side * 25, 28], [side * 10, 26]], hexToRgba(p.mid, .95), hexToRgba(p.accent, .5), 1);
+    }
+    drawShipCockpit(c, p, 0, 7, 4.8, 9.5);
+    drawHullNumber(c, p, ship.num, -27, 3, 10);
+    drawHullNumber(c, p, ship.num, 27, 3, 10);
+  },
+
+  striker(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -14, 0, 18);
+    wing.addColorStop(0, p.light);
+    wing.addColorStop(.5, p.mid);
+    wing.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 9, -9], [side * 41, -10], [side * 41, 15], [side * 28, 15], [side * 13, 8]], wing, hexToRgba(p.accent, .8), 1.3);
+      paintShipPoly(c, [[side * 14, -6], [side * 37, -6], [side * 36, 8], [side * 17, 5]], hexToRgba(p.hull, .36), null);
+      c.fillStyle = hexToRgba(p.dark, .78);
+      c.fillRect(side * 42 - 3, -5, 6, 17);
+      c.fillStyle = hexToRgba(p.accent, .9);
+      c.fillRect(side * 42 - 4, 1, 8, 2);
+      paintShipPoly(c, [[side * 7, 16], [side * 25, 31], [side * 9, 27]], hexToRgba(p.mid, .92), hexToRgba(p.accent, .42), 1);
+    }
+    const hull = c.createLinearGradient(0, -44, 0, 31);
+    hull.addColorStop(0, p.dark);
+    hull.addColorStop(.22, p.mid);
+    hull.addColorStop(.62, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -44], [7, -18], [10, 14], [6, 30], [-6, 30], [-10, 14], [-7, -18]], hull, hexToRgba(p.accent, .92), 1.4);
+    c.strokeStyle = hexToRgba(p.hull, .5);
+    c.lineWidth = 1;
+    c.beginPath();
+    c.moveTo(-7, 15); c.lineTo(7, 15);
+    c.moveTo(-6, 22); c.lineTo(6, 22);
+    c.stroke();
+    drawShipCockpit(c, p, 0, -10, 4.8, 10);
+    drawHullNumber(c, p, ship.num, -26, 3, 10);
+    drawHullNumber(c, p, ship.num, 26, 3, 10);
+  },
+
+  beetle(c, p, time, od, ship) {
+    const shell = c.createLinearGradient(0, -34, 0, 28);
+    shell.addColorStop(0, p.hull);
+    shell.addColorStop(.42, p.light);
+    shell.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 12, -18], [side * 30, -23], [side * 31, -9], [side * 18, 2]], shell, hexToRgba(p.accent, .7), 1.1);
+      c.save();
+      c.translate(side * 27, -15);
+      c.beginPath();
+      c.ellipse(0, 0, 7, 13, 0, 0, TAU);
+      c.fillStyle = p.mid;
+      c.fill();
+      c.strokeStyle = hexToRgba(p.accent, .8);
+      c.lineWidth = 1.1;
+      c.stroke();
+      c.beginPath();
+      c.ellipse(0, -10, 7, 3.4, 0, 0, TAU);
+      c.fillStyle = p.light;
+      c.fill();
+      c.restore();
+    }
+    c.beginPath();
+    c.ellipse(0, 2, 16, 29, 0, 0, TAU);
+    c.fillStyle = shell;
+    c.fill();
+    c.strokeStyle = hexToRgba(p.accent, .8);
+    c.lineWidth = 1.4;
+    c.stroke();
+    c.strokeStyle = hexToRgba(p.dark, .55);
+    c.lineWidth = 1;
+    c.beginPath();
+    c.ellipse(0, 5, 7, 22, 0, 0, TAU);
+    c.stroke();
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 7, 19], [side * 19, 31], [side * 6, 28]], hexToRgba(p.mid, .95), hexToRgba(p.accent, .4), 1);
+      for (let i = 0; i < 3; i++) {
+        c.beginPath();
+        c.arc(side * 12, -10 + i * 10, 2, 0, TAU);
+        c.fillStyle = hexToRgba(p.accent, .42);
+        c.fill();
+      }
+    }
+    drawShipCockpit(c, p, 0, -8, 8, 12);
+    drawHullNumber(c, p, ship.num, -22, -7, 9);
+    drawHullNumber(c, p, ship.num, 22, -7, 9);
+  },
+
+  crescent(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -24, 0, 18);
+    wing.addColorStop(0, p.light);
+    wing.addColorStop(.55, p.mid);
+    wing.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 8, -13], [side * 28, -24], [side * 39, -7], [side * 37, 13], [side * 17, 9]], wing, hexToRgba(p.accent, .56), 1.3);
+      c.fillStyle = hexToRgba(p.accent, .85);
+      c.fillRect(side * 38 - 2, -7, 4, 17);
+      paintShipPoly(c, [[side * 10, 12], [side * 22, 27], [side * 8, 22]], hexToRgba(p.mid, .95), hexToRgba(p.accent, .35), 1);
+    }
+    const hull = c.createLinearGradient(0, -42, 0, 32);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.42, p.light);
+    hull.addColorStop(1, p.mid);
+    c.beginPath();
+    c.ellipse(0, -2, 13, 31, 0, 0, TAU);
+    c.fillStyle = hull;
+    c.fill();
+    c.strokeStyle = hexToRgba(p.accent, .8);
+    c.lineWidth = 1.3;
+    c.stroke();
+    c.fillStyle = hexToRgba(p.accent, .85);
+    c.fillRect(-2.2, -27, 4.4, 42);
+    for (const side of [-1, 1]) {
+      c.fillStyle = hexToRgba(p.mid, .9);
+      c.fillRect(side * 12 - 3, 14, 6, 13);
+      c.fillStyle = hexToRgba(p.light, .7);
+      c.fillRect(side * 12 - 2, 14, 4, 4);
+    }
+    drawShipCockpit(c, p, 0, -9, 7, 11);
+    drawHullNumber(c, p, ship.num, -24, 0, 9.5);
+    drawHullNumber(c, p, ship.num, 24, 0, 9.5);
+  },
+
+  viper(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -8, 0, 22);
+    wing.addColorStop(0, p.accent);
+    wing.addColorStop(.55, p.hull);
+    wing.addColorStop(1, p.mid);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 8, -6], [side * 38, 1], [side * 34, 17], [side * 21, 21], [side * 12, 9]], wing, hexToRgba(p.dark, .75), 1.2);
+      paintShipPoly(c, [[side * 11, 0], [side * 30, 4], [side * 27, 11], [side * 14, 7]], hexToRgba(p.light, .35), null);
+      c.fillStyle = hexToRgba(p.dark, .7);
+      c.fillRect(side * 34 - 3, 6, 6, 12);
+    }
+    const hull = c.createLinearGradient(0, -44, 0, 31);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.4, p.light);
+    hull.addColorStop(1, p.dark);
+    paintShipPoly(c, [[0, -44], [7, -18], [10, 8], [7, 29], [0, 32], [-7, 29], [-10, 8], [-7, -18]], hull, hexToRgba(p.accent, .88), 1.3);
+    c.fillStyle = hexToRgba(p.mid, .9);
+    c.fillRect(-8, -3, 16, 8);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 7, 16], [side * 17, 30], [side * 5, 27]], hexToRgba(p.mid, .95), hexToRgba(p.accent, .4), 1);
+      c.fillStyle = hexToRgba(p.light, .75);
+      c.fillRect(side * 12 - 1, 0, 2, 8);
+    }
+    drawShipCockpit(c, p, 0, -12, 4.8, 9.5);
+    drawHullNumber(c, p, ship.num, -25, 5, 9);
+    drawHullNumber(c, p, ship.num, 25, 5, 9);
+  },
+
+  vanguard(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -12, 0, 24);
+    wing.addColorStop(0, p.hull);
+    wing.addColorStop(.45, p.light);
+    wing.addColorStop(1, p.mid);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 9, -7], [side * 38, -2], [side * 37, 20], [side * 22, 17], [side * 13, 8]], wing, hexToRgba(p.accent, .9), 1.3);
+      paintShipPoly(c, [[side * 14, 1], [side * 33, 5], [side * 31, 15], [side * 17, 12]], hexToRgba(p.dark, .28), null);
+      c.fillStyle = hexToRgba(p.dark, .78);
+      c.fillRect(side * 38 - 3, 7, 6, 13);
+      c.save();
+      c.translate(side * 20, -15);
+      c.beginPath();
+      c.ellipse(0, 0, 8, 13, 0, 0, TAU);
+      c.fillStyle = hexToRgba(p.dark, .82);
+      c.fill();
+      c.strokeStyle = hexToRgba(p.hull, .35);
+      c.lineWidth = 1;
+      c.stroke();
+      c.beginPath();
+      c.ellipse(0, -10, 8, 3, 0, 0, TAU);
+      c.fillStyle = hexToRgba(p.light, .72);
+      c.fill();
+      c.restore();
+    }
+    const hull = c.createLinearGradient(0, -40, 0, 32);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.4, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -39], [8, -17], [10, 12], [8, 29], [-8, 29], [-10, 12], [-8, -17]], hull, hexToRgba(p.accent, .95), 1.4);
+    for (const side of [-1, 1]) {
+      c.fillStyle = hexToRgba(p.dark, .72);
+      c.fillRect(side * 10 - 3, 19, 6, 11);
+      c.fillStyle = hexToRgba(p.light, .9);
+      c.fillRect(side * 10 - 2, 20, 4, 3);
+      paintShipPoly(c, [[side * 8, 15], [side * 23, 29], [side * 8, 26]], hexToRgba(p.mid, .92), hexToRgba(p.accent, .4), 1);
+    }
+    drawShipCockpit(c, p, 0, -9, 5, 10);
+    drawHullNumber(c, p, ship.num, -25, 6, 9.5);
+    drawHullNumber(c, p, ship.num, 25, 6, 9.5);
+  },
+
+  phantom(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -26, 0, 30);
+    wing.addColorStop(0, p.light);
+    wing.addColorStop(.42, p.mid);
+    wing.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 8, -16], [side * 40, -18], [side * 36, 1], [side * 14, 7]], wing, hexToRgba(p.accent, .55), 1.2);
+      paintShipPoly(c, [[side * 8, 7], [side * 32, 20], [side * 18, 30], [side * 5, 17]], wing, hexToRgba(p.accent, .42), 1.2);
+      c.fillStyle = hexToRgba(p.accent, .9);
+      c.fillRect(side * 30 - 4, -9, 8, 3);
+      c.fillStyle = hexToRgba(p.dark, .7);
+      c.fillRect(side * 22 - 3, -2, 6, 8);
+    }
+    const hull = c.createLinearGradient(0, -43, 0, 31);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.38, p.light);
+    hull.addColorStop(1, p.dark);
+    paintShipPoly(c, [[0, -43], [7, -19], [10, 14], [5, 30], [-5, 30], [-10, 14], [-7, -19]], hull, hexToRgba(p.accent, .8), 1.3);
+    c.strokeStyle = hexToRgba(p.accent, .75);
+    c.lineWidth = 1.1;
+    c.beginPath();
+    c.moveTo(-6, 13); c.lineTo(6, 13);
+    c.moveTo(-5, 20); c.lineTo(5, 20);
+    c.stroke();
+    drawShipCockpit(c, p, 0, -14, 4.6, 9.5);
+    c.beginPath();
+    c.arc(0, 8, 3.2 + Math.sin(time * 3) * .6, 0, TAU);
+    c.fillStyle = hexToRgba(p.accent, .9);
+    c.fill();
+    drawHullNumber(c, p, ship.num, -28, -5, 9);
+    drawHullNumber(c, p, ship.num, 28, -5, 9);
+  },
+
+  block(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -20, 0, 18);
+    wing.addColorStop(0, p.light);
+    wing.addColorStop(.5, p.mid);
+    wing.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 9, -13], [side * 39, -13], [side * 39, 13], [side * 18, 10], [side * 11, 3]], wing, hexToRgba(p.accent, .82), 1.3);
+      paintShipPoly(c, [[side * 15, -8], [side * 34, -8], [side * 34, 7], [side * 18, 5]], hexToRgba(p.hull, .28), null);
+      paintShipPoly(c, [[side * 32, -12], [side * 39, -22], [side * 38, -7]], hexToRgba(p.accent, .9), null);
+      c.fillStyle = hexToRgba(p.dark, .82);
+      c.fillRect(side * 38 - 3, -2, 6, 14);
+      c.fillStyle = hexToRgba(p.accent, .9);
+      c.fillRect(side * 37 - 3, 3, 6, 2);
+    }
+    const hull = c.createLinearGradient(0, -41, 0, 31);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.4, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -41], [8, -17], [9, 16], [6, 30], [-6, 30], [-9, 16], [-8, -17]], hull, hexToRgba(p.accent, .88), 1.4);
+    c.fillStyle = hexToRgba(p.accent, .9);
+    c.fillRect(-8, -11, 16, 24);
+    c.fillStyle = hexToRgba(p.glass, .96);
+    c.fillRect(-5.5, -14, 11, 19);
+    c.strokeStyle = hexToRgba(p.hull, .8);
+    c.lineWidth = 1;
+    c.strokeRect(-5.5, -14, 11, 19);
+    c.fillStyle = hexToRgba(p.dark, .72);
+    c.fillRect(-4, 18, 8, 9);
+    drawHullNumber(c, p, ship.num, -26, 3, 9.5);
+    drawHullNumber(c, p, ship.num, 26, 3, 9.5);
+  },
+
+  spear(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -20, 0, 18);
+    wing.addColorStop(0, p.light);
+    wing.addColorStop(.48, p.mid);
+    wing.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 8, -10], [side * 30, -17], [side * 40, -3], [side * 36, 15], [side * 18, 11], [side * 11, 2]], wing, hexToRgba(p.accent, .8), 1.3);
+      paintShipPoly(c, [[side * 14, -8], [side * 33, -4], [side * 31, 8], [side * 16, 5]], hexToRgba(p.hull, .26), null);
+      c.fillStyle = hexToRgba(p.accent, .94);
+      c.fillRect(side * 38 - 2, -4, 4, 15);
+      paintShipPoly(c, [[side * 7, 14], [side * 24, 28], [side * 8, 24]], hexToRgba(p.mid, .92), hexToRgba(p.accent, .45), 1);
+    }
+    const hull = c.createLinearGradient(0, -47, 0, 32);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.4, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -47], [6, -21], [9, 10], [6, 29], [0, 33], [-6, 29], [-9, 10], [-6, -21]], hull, hexToRgba(p.accent, .92), 1.4);
+    c.fillStyle = hexToRgba(p.accent, .95);
+    c.fillRect(-2.2, -31, 4.4, 49);
+    c.fillStyle = hexToRgba(p.mid, .9);
+    c.fillRect(-8, -1, 16, 7);
+    for (const side of [-1, 1]) {
+      c.fillStyle = hexToRgba(p.dark, .7);
+      c.fillRect(side * 15 - 3, 10, 6, 11);
+      c.fillStyle = hexToRgba(p.accent, .85);
+      c.fillRect(side * 15 - 2, 11, 4, 3);
+    }
+    drawShipCockpit(c, p, 0, -12, 4.8, 9.5);
+    drawHullNumber(c, p, ship.num, -26, 2, 9.5);
+    drawHullNumber(c, p, ship.num, 26, 2, 9.5);
+  },
+
+  valkyrie(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -34, 0, 22);
+    wing.addColorStop(0, p.hull);
+    wing.addColorStop(.4, p.light);
+    wing.addColorStop(1, p.mid);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 7, -20], [side * 28, -34], [side * 42, -11], [side * 34, 13], [side * 18, 8], [side * 9, -1]], wing, hexToRgba(p.accent, .85), 1.3);
+      paintShipPoly(c, [[side * 17, -21], [side * 34, -12], [side * 29, 4], [side * 15, 2]], hexToRgba(p.hull, .35), null);
+      c.strokeStyle = hexToRgba(p.dark, .6);
+      c.lineWidth = 1.1;
+      c.beginPath();
+      c.moveTo(side * 12, -8); c.lineTo(side * 30, -4);
+      c.moveTo(side * 13, 0); c.lineTo(side * 28, 6);
+      c.stroke();
+      paintShipPoly(c, [[side * 8, 14], [side * 27, 29], [side * 9, 25]], hexToRgba(p.mid, .95), hexToRgba(p.accent, .45), 1);
+      c.fillStyle = hexToRgba(p.dark, .65);
+      c.fillRect(side * 35 - 3, 2, 6, 12);
+    }
+    const hull = c.createLinearGradient(0, -40, 0, 32);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.42, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -40], [7, -17], [8, 18], [5, 31], [-5, 31], [-8, 18], [-7, -17]], hull, hexToRgba(p.accent, .95), 1.4);
+    c.strokeStyle = hexToRgba(p.dark, .45);
+    c.lineWidth = 1;
+    c.beginPath();
+    c.moveTo(-6, 18); c.lineTo(6, 18);
+    c.stroke();
+    drawShipCockpit(c, p, 0, -10, 5, 11);
+    drawHullNumber(c, p, ship.num, -27, 1, 9.5);
+    drawHullNumber(c, p, ship.num, 27, 1, 9.5);
+  },
+
+  stinger(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -24, 0, 23);
+    wing.addColorStop(0, p.light);
+    wing.addColorStop(.48, p.mid);
+    wing.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 7, -16], [side * 30, -17], [side * 37, 0], [side * 25, 12], [side * 13, 7]], wing, hexToRgba(p.accent, .72), 1.3);
+      paintShipPoly(c, [[side * 13, -10], [side * 28, -8], [side * 30, 1], [side * 16, 2]], hexToRgba(p.hull, .28), null);
+      c.fillStyle = hexToRgba(p.dark, .7);
+      c.fillRect(side * 27 - 3, -9, 6, 13);
+      c.fillStyle = hexToRgba(p.light, .9);
+      c.fillRect(side * 27 - 2, -8, 4, 3);
+      paintShipPoly(c, [[side * 7, 16], [side * 19, 29], [side * 7, 25]], hexToRgba(p.mid, .95), hexToRgba(p.accent, .4), 1);
+    }
+    const hull = c.createLinearGradient(0, -43, 0, 32);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.4, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -43], [7, -19], [9, 9], [6, 29], [0, 34], [-6, 29], [-9, 9], [-7, -19]], hull, hexToRgba(p.accent, .9), 1.4);
+    c.strokeStyle = hexToRgba(p.dark, .55);
+    c.lineWidth = 1;
+    c.beginPath();
+    c.moveTo(-7, 14); c.lineTo(7, 14);
+    c.moveTo(-5, 22); c.lineTo(5, 22);
+    c.stroke();
+    drawShipCockpit(c, p, 0, -11, 5, 10.5);
+    c.fillStyle = hexToRgba(p.accent, .85);
+    c.fillRect(-1.5, 25, 3, 9);
+    drawHullNumber(c, p, ship.num, -22, -1, 9);
+    drawHullNumber(c, p, ship.num, 22, -1, 9);
+  },
+
+  titan(c, p, time, od, ship) {
+    const hull = c.createLinearGradient(0, -40, 0, 31);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.4, p.light);
+    hull.addColorStop(1, p.mid);
+    const darkHull = c.createLinearGradient(0, -34, 0, 24);
+    darkHull.addColorStop(0, p.light);
+    darkHull.addColorStop(.55, p.mid);
+    darkHull.addColorStop(1, p.dark);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 15, -30], [side * 40, -31], [side * 42, 16], [side * 31, 27], [side * 19, 20], [side * 15, 2]], darkHull, hexToRgba(p.accent, .55), 1.3);
+      c.fillStyle = hexToRgba(p.light, .92);
+      c.fillRect(side * 30 - 8, -39, 16, 25);
+      c.fillStyle = hexToRgba(p.accent, .95);
+      c.fillRect(side * 30 - 8, -30, 16, 4);
+      c.fillStyle = hexToRgba(p.dark, .82);
+      c.fillRect(side * 30 - 6, -43, 12, 6);
+      c.fillStyle = hexToRgba(p.dark, .68);
+      c.fillRect(side * 38 - 3, 12, 6, 16);
+    }
+    paintShipPoly(c, [[-18, -9], [18, -9], [16, 15], [-16, 15]], hexToRgba(p.dark, .88), hexToRgba(p.light, .5), 1.2);
+    paintShipPoly(c, [[-13, 12], [13, 12], [10, 28], [-10, 28]], hexToRgba(p.mid, .92), hexToRgba(p.accent, .45), 1.1);
+    paintShipPoly(c, [[0, -31], [7, -12], [8, 24], [5, 31], [-5, 31], [-8, 24], [-7, -12]], hull, hexToRgba(p.accent, .8), 1.3);
+    c.fillStyle = hexToRgba(p.hull, .9);
+    c.fillRect(-4, -20, 8, 10);
+    drawShipCockpit(c, p, 0, -14, 4.2, 8);
+    for (const side of [-1, 1]) {
+      c.fillStyle = hexToRgba(p.dark, .75);
+      c.fillRect(side * 24 - 2, 4, 4, 11);
+      c.fillStyle = hexToRgba(p.accent, .8);
+      c.fillRect(side * 24 - 2, 12, 4, 2);
+    }
+    drawHullNumber(c, p, ship.num, -27, 4, 9.5);
+    drawHullNumber(c, p, ship.num, 27, 4, 9.5);
+  },
+
+  sovereign(c, p, time, od, ship) {
+    const wing = c.createLinearGradient(0, -34, 0, 32);
+    wing.addColorStop(0, p.hull);
+    wing.addColorStop(.38, p.light);
+    wing.addColorStop(1, p.mid);
+    for (const side of [-1, 1]) {
+      paintShipPoly(c, [[side * 8, -20], [side * 26, -34], [side * 45, -10], [side * 42, 17], [side * 22, 11], [side * 12, 2]], wing, hexToRgba(p.accent, .95), 1.4);
+      paintShipPoly(c, [[side * 15, -21], [side * 32, -16], [side * 36, -2], [side * 19, 2]], hexToRgba(p.hull, .34), null);
+      c.save();
+      c.translate(side * 26, 8);
+      c.beginPath();
+      c.arc(0, 0, 7, 0, TAU);
+      c.fillStyle = hexToRgba(p.accent, .9);
+      c.fill();
+      c.beginPath();
+      c.arc(0, 0, 3.4, 0, TAU);
+      c.fillStyle = hexToRgba(p.dark, .92);
+      c.fill();
+      c.restore();
+      c.fillStyle = hexToRgba(p.dark, .8);
+      c.fillRect(side * 41 - 4, 18, 8, 12);
+      c.fillStyle = hexToRgba(p.light, .95);
+      c.fillRect(side * 41 - 3, 19, 6, 3);
+      paintShipPoly(c, [[side * 8, 15], [side * 27, 30], [side * 9, 27]], hexToRgba(p.mid, .95), hexToRgba(p.accent, .55), 1);
+    }
+    const hull = c.createLinearGradient(0, -47, 0, 33);
+    hull.addColorStop(0, p.hull);
+    hull.addColorStop(.4, p.light);
+    hull.addColorStop(1, p.mid);
+    paintShipPoly(c, [[0, -47], [7, -22], [9, 12], [7, 31], [-7, 31], [-9, 12], [-7, -22]], hull, hexToRgba(p.accent, .98), 1.5);
+    c.fillStyle = hexToRgba(p.dark, .35);
+    c.fillRect(-2.5, -32, 5, 58);
+    c.fillStyle = hexToRgba(p.accent, .95);
+    c.fillRect(-9, -2, 18, 3);
+    drawShipCockpit(c, p, 0, -12, 5, 11);
+    drawHullNumber(c, p, ship.num, -31, 2, 10);
+    drawHullNumber(c, p, ship.num, 31, 2, 10);
+  }
+};
+
+function drawShipGraphic(c, ship, time, od) {
+  const p = ship.palette;
+  const flick = 1 + .13 * Math.sin(time * 24 + ship.num * .7);
+  const boost = od ? 1.45 : 1;
+  c.save();
+
+  const aura = c.createRadialGradient(0, 4, 2, 0, 4, od ? 72 : 56);
+  aura.addColorStop(0, hexToRgba(p.accent, od ? .3 : .18));
+  aura.addColorStop(.48, hexToRgba(p.light, od ? .12 : .07));
+  aura.addColorStop(1, hexToRgba(p.light, 0));
+  c.globalCompositeOperation = 'lighter';
+  c.fillStyle = aura;
+  c.beginPath();
+  c.arc(0, 4, od ? 72 : 56, 0, TAU);
+  c.fill();
+  c.globalCompositeOperation = 'source-over';
+
+  const engines = SHIP_ENGINES[ship.shape] || [[-7, 20], [7, 20]];
+  for (const e of engines) {
+    const len = (17 + 11 * flick) * boost;
+    const flame = c.createLinearGradient(0, e[1], 0, e[1] + len + 16);
+    flame.addColorStop(0, hexToRgba(p.hull, .95));
+    flame.addColorStop(.25, hexToRgba(p.accent, .85));
+    flame.addColorStop(.65, 'rgba(' + p.trail + ',.45)');
+    flame.addColorStop(1, 'rgba(' + p.trail + ',0)');
+    c.fillStyle = flame;
+    c.beginPath();
+    c.moveTo(e[0] - 4, e[1]);
+    c.quadraticCurveTo(e[0], e[1] + len * .55, e[0], e[1] + len);
+    c.quadraticCurveTo(e[0], e[1] + len * .55, e[0] + 4, e[1]);
+    c.closePath();
+    c.fill();
+  }
+
+  const drawShape = SHIP_SHAPES[ship.shape] || SHIP_SHAPES.dart;
+  drawShape(c, p, time, od, ship);
+  c.restore();
+}
+
+function drawShipPreview(canvasEl, ship) {
+  const c = canvasEl.getContext('2d');
+  const size = canvasEl.width;
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.clearRect(0, 0, size, size);
+  c.save();
+  c.translate(size / 2, size * .56);
+  c.scale(1.42, 1.42);
+  drawShipGraphic(c, ship, 1.7 + ship.num * .13, false);
+  c.restore();
+}
+
 function drawPlayer() {
   if (player.dead) return;
   if (player.invuln > 0 && Math.floor(player.invuln * 14) % 2 === 0) return;
 
   const od = player.overdrive > 0;
+  const ship = activeShip;
   ctx.save();
   ctx.translate(player.x, player.y);
   ctx.rotate(player.bank);
-
-  const flick = rand(.75, 1.3);
-  drawGlow(od ? GLOW.magenta : GLOW.cyan, 0, 8, od ? 160 : 118, .55);
-
-  const flame = ctx.createLinearGradient(0, 20, 0, 52 * flick);
-  flame.addColorStop(0, od ? 'rgba(255,120,230,.95)' : 'rgba(140,250,255,.95)');
-  flame.addColorStop(.45, 'rgba(110,150,255,.55)');
-  flame.addColorStop(1, 'rgba(80,100,255,0)');
-  ctx.fillStyle = flame;
-  ctx.beginPath();
-  ctx.moveTo(-8, 20);
-  ctx.lineTo(0, 46 * flick);
-  ctx.lineTo(8, 20);
-  ctx.closePath();
-  ctx.fill();
-
-  const hull = ctx.createLinearGradient(0, -38, 0, 26);
-  hull.addColorStop(0, '#ffffff');
-  hull.addColorStop(.42, '#a9eeff');
-  hull.addColorStop(1, '#2b6c9e');
-  ctx.beginPath();
-  ctx.moveTo(0, -38);
-  ctx.lineTo(8, -7);
-  ctx.lineTo(27, 17);
-  ctx.lineTo(11, 12);
-  ctx.lineTo(7, 25);
-  ctx.lineTo(-7, 25);
-  ctx.lineTo(-11, 12);
-  ctx.lineTo(-27, 17);
-  ctx.lineTo(-8, -7);
-  ctx.closePath();
-  ctx.fillStyle = hull;
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(225,255,255,.9)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.ellipse(0, -5, 6, 11, 0, 0, TAU);
-  ctx.fillStyle = '#0a2b4d';
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(-2, -8, 2.2, 4, 0, 0, TAU);
-  ctx.fillStyle = 'rgba(160,250,255,.9)';
-  ctx.fill();
-
-  ctx.fillStyle = od ? '#ff4fd8' : '#5ef3ff';
-  ctx.fillRect(-23, 9, 8, 3);
-  ctx.fillRect(15, 9, 8, 3);
+  drawGlow(od ? GLOW.magenta : SHIP_GLOW[ship.id].trail, 0, 10, od ? 164 : 124, od ? .55 : .4);
+  drawShipGraphic(ctx, ship, performance.now() / 1000, od);
 
   if (od) {
     ctx.save();
@@ -2211,7 +3655,7 @@ function drawPlayer() {
     ctx.lineWidth = 2;
     ctx.setLineDash([14, 12]);
     ctx.beginPath();
-    ctx.arc(0, 0, 42, 0, TAU);
+    ctx.arc(0, 0, 44, 0, TAU);
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.restore();
@@ -2221,7 +3665,7 @@ function drawPlayer() {
     ctx.strokeStyle = 'rgba(94,243,255,' + (.35 + .25 * Math.sin(performance.now() * .02)).toFixed(2) + ')';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(0, 0, 34, 0, TAU);
+    ctx.arc(0, 0, 36, 0, TAU);
     ctx.stroke();
   }
   ctx.restore();
@@ -2231,20 +3675,41 @@ function drawPlayerBullets() {
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
   for (const b of playerBullets) {
-    if (b.type === 'laser') {
-      drawGlow(GLOW.magenta, b.x, b.y, 90, .8);
-      ctx.fillStyle = 'rgba(255,120,240,.5)';
-      ctx.fillRect(b.x - b.w / 2 - 5, b.y - b.h / 2, b.w + 10, b.h);
-      ctx.fillStyle = '#fff2ff';
+    const sprite = b.sprite || GLOW.cyan;
+    if (b.type === 'laser' || b.type === 'odlaser') {
+      drawGlow(sprite, b.x, b.y, b.type === 'odlaser' ? 102 : 82, .82);
+      ctx.fillStyle = 'rgba(' + b.rgb + ',.55)';
+      ctx.fillRect(b.x - b.w / 2 - 4, b.y - b.h / 2, b.w + 8, b.h);
+      ctx.fillStyle = b.type === 'odlaser' ? '#fff0ff' : '#fffdf0';
       ctx.fillRect(b.x - b.w / 2, b.y - b.h / 2, b.w, b.h);
+      ctx.fillStyle = 'rgba(' + b.rgb + ',.9)';
+      ctx.fillRect(b.x - b.w / 4, b.y - b.h / 2, b.w / 2, b.h);
     } else if (b.type === 'wing') {
-      drawGlow(GLOW.magenta, b.x, b.y, 40, .7);
-      ctx.fillStyle = '#ffc6f7';
+      drawGlow(sprite, b.x, b.y, 40, .7);
+      ctx.fillStyle = 'rgba(' + b.rgb + ',.95)';
       ctx.fillRect(b.x - b.w / 2, b.y - b.h / 2, b.w, b.h);
+    } else if (b.type === 'heavy') {
+      drawGlow(sprite, b.x, b.y, 64, .85);
+      ctx.fillStyle = 'rgba(' + b.rgb + ',.55)';
+      ctx.beginPath();
+      ctx.ellipse(b.x, b.y, b.w * .95, b.h * .62, 0, 0, TAU);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(b.x, b.y, b.w * .42, b.h * .44, 0, 0, TAU);
+      ctx.fill();
+    } else if (b.type === 'spread') {
+      drawGlow(sprite, b.x, b.y, 34, .74);
+      ctx.fillStyle = 'rgba(' + b.rgb + ',.95)';
+      ctx.fillRect(b.x - b.w / 2, b.y - b.h / 2, b.w, b.h);
+      ctx.fillStyle = 'rgba(255,255,255,.9)';
+      ctx.fillRect(b.x - b.w / 4, b.y - b.h / 2 + 2, b.w / 2, b.h - 4);
     } else {
-      drawGlow(GLOW.cyan, b.x, b.y, 38, .75);
-      ctx.fillStyle = '#e7ffff';
-      ctx.fillRect(b.x - b.w / 2, b.y - b.h / 2, b.w, b.h);
+      drawGlow(sprite, b.x, b.y, 40, .78);
+      ctx.fillStyle = 'rgba(' + b.rgb + ',.85)';
+      ctx.fillRect(b.x - b.w / 2 - 1, b.y - b.h / 2, b.w + 2, b.h);
+      ctx.fillStyle = '#fffdf0';
+      ctx.fillRect(b.x - b.w / 4, b.y - b.h / 2 + 1, b.w / 2, b.h - 2);
     }
   }
   ctx.restore();
@@ -2375,6 +3840,26 @@ function drawShockwaves() {
   ctx.restore();
 }
 
+function drawFloatTexts() {
+  if (!floatTexts.length) return;
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (const f of floatTexts) {
+    const a = Math.min(1, f.life / f.maxLife * 2.4);
+    ctx.globalAlpha = a;
+    ctx.font = '800 ' + f.size + 'px ui-monospace, Consolas, monospace';
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(3,1,10,.8)';
+    ctx.strokeText(f.text, f.x, f.y);
+    ctx.fillStyle = f.color;
+    ctx.shadowColor = f.color;
+    ctx.shadowBlur = 12;
+    ctx.fillText(f.text, f.x, f.y);
+  }
+  ctx.restore();
+}
+
 function render() {
   ctx.clearRect(0, 0, W, H);
   ctx.save();
@@ -2394,6 +3879,7 @@ function render() {
 
   drawParticles();
   drawShockwaves();
+  drawFloatTexts();
   ctx.restore();
 
   if (flash > 0) {
@@ -2422,22 +3908,25 @@ function hideBossBar() {
 }
 
 function showScreen(id) {
-  ['menu-screen', 'gameover-screen', 'pause-screen', 'username-modal'].forEach((sid) => {
+  ['menu-screen', 'gameover-screen', 'pause-screen', 'hangar-screen', 'username-modal'].forEach((sid) => {
     document.getElementById(sid).classList.toggle('hidden', sid !== id);
   });
 }
 function hideAllScreens() {
-  ['menu-screen', 'gameover-screen', 'pause-screen', 'username-modal'].forEach((sid) => {
+  ['menu-screen', 'gameover-screen', 'pause-screen', 'hangar-screen', 'username-modal'].forEach((sid) => {
     document.getElementById(sid).classList.add('hidden');
   });
 }
 
 /* ---------- game flow ---------- */
 function resetGame() {
+  applyShipToRun();
   score = 0;
   stage = 1;
-  lives = 3;
+  lives = 3 + (activeShip.stats.extraHull || 0);
+  runCrystals = 0;
   waveDelay = 0;
+  player.speed = BASE_PLAYER_SPEED * activeShip.stats.speed;
   player.x = W / 2;
   player.y = H - 170;
   player.cooldown = 0;
@@ -2452,6 +3941,7 @@ function resetGame() {
   escorts.length = 0;
   particles.length = 0;
   shockwaves.length = 0;
+  floatTexts.length = 0;
   beams.length = 0;
   boss.active = false;
   boss.dead = false;
@@ -2464,6 +3954,8 @@ function resetGame() {
   shake = 0;
   flash = 0;
   hideBossBar();
+  rebuildLifePips(lives);
+  updateCrystalUI();
   updateHUD(true);
 }
 
@@ -2473,6 +3965,7 @@ function startPlaying() {
   hideAllScreens();
   gameState = STATE.PLAYING;
   btnPause.classList.remove('hidden');
+  walletHud.classList.add('show');
   spawnBoss();
   updateHUD(true);
 }
@@ -2482,10 +3975,13 @@ function gameOverNow() {
   btnPause.classList.add('hidden');
   document.getElementById('final-score').textContent = score.toLocaleString('id-ID');
   document.getElementById('final-stage').textContent = pad(stage, 2);
+  document.getElementById('final-crystals').textContent = formatCrystals(runCrystals);
+  document.getElementById('gameover-earned').textContent = formatCrystals(runCrystals);
   addLeaderboardEntry(currentUsername, score);
   renderLeaderboard('gameover-leaderboard');
   renderLeaderboard('menu-leaderboard');
   showScreen('gameover-screen');
+  updateCrystalUI();
   updateHUD(true);
 }
 
@@ -2493,6 +3989,7 @@ function quitToMenu() {
   gameState = STATE.MENU;
   resetGame();
   btnPause.classList.add('hidden');
+  walletHud.classList.remove('show');
   renderLeaderboard('menu-leaderboard');
   showScreen('menu-screen');
 }
@@ -2578,6 +4075,15 @@ const bannerTitle = document.getElementById('bannerTitle');
 const bannerSub = document.getElementById('bannerSub');
 const btnPause = document.getElementById('btnPause');
 const btnSound = document.getElementById('btnSound');
+const menuCrystalsEl = document.getElementById('menu-crystals');
+const menuShipNameEl = document.getElementById('menu-ship-name');
+const hangarCrystalsEl = document.getElementById('hangar-crystals');
+const hangarEquippedEl = document.getElementById('hangar-equipped');
+const hangarListEl = document.getElementById('hangar-list');
+const hudCrystalsEl = document.getElementById('hud-crystals');
+const hudRunEl = document.getElementById('hud-run');
+const walletHud = document.getElementById('walletHud');
+const toastEl = document.getElementById('toast');
 
 /* ===================================================================
    8. MAIN GAME LOOP
@@ -2618,6 +4124,10 @@ document.getElementById('btn-start').addEventListener('click', () => {
   }
 });
 
+document.getElementById('btn-hangar').addEventListener('click', openHangar);
+document.getElementById('btn-hangar-close').addEventListener('click', closeHangar);
+document.getElementById('btn-hangar-back').addEventListener('click', closeHangar);
+
 document.getElementById('btn-change-name').addEventListener('click', () => {
   showUsernameModal(false);
 });
@@ -2644,10 +4154,13 @@ document.addEventListener('visibilitychange', () => {
 
 /* ---------- boot ---------- */
 currentUsername = loadLastUsername();
+applyShipToRun();
+saveHangarState();
 btnSound.classList.toggle('muted', muted);
 btnSound.setAttribute('aria-pressed', muted ? 'true' : 'false');
 initAmbient();
 renderLeaderboard('menu-leaderboard');
+updateCrystalUI();
 updateHUD(true);
 requestAnimationFrame(gameLoop);
 </script>
